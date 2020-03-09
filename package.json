@@ -1,0 +1,24 @@
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --kill-others \"heroku local\" \"npm run start --prefix ./client\"",
+    "postinstall": "npm install --prefix ./server && npm install --prefix ./client && npm run build --prefix ./client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jolenele/mern-chat-app.git"
+  },
+  "author": "Nga Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jolenele/mern-chat-app/issues"
+  },
+  "homepage": "https://github.com/jolenele/mern-chat-app#readme",
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
