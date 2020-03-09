@@ -3,19 +3,19 @@ let express = require('express'),
   http = require('http').Server(app),
   path = require('path'),
   io = require('socket.io')(http),
-  connectDB = require('./config'),
-  mongoose = require('mongoose'),
+  connectDB = require('./dbconfig'),
   Message = require('./Message'),
-  PORT = process.env.PORT || 4000;
+  PORT = process.env.PORT || 5000;
 
 // Connect database
 connectDB();
 
-app.use(express.static(path.join(__dirname, '..', 'client')));
+app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 io.on('connection', socket => {
   socket.on = 'Anonymous';
   console.log('Socket connected');
+  console.log('New user connected');
 
   // Get the last 10 messages from the database.
   Message.find()
@@ -32,8 +32,11 @@ io.on('connection', socket => {
     // Create a message with the content and the name of the user.
     const message = new Message({
       message: msg.message,
-      name: msg.name,
+      name: socket.name,
     });
+
+    io.sockets.emit('new_message', message);
+    console.log('New Message : ', message);
 
     // Save the message to the database.
     message.save(err => {
