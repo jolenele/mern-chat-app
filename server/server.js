@@ -5,7 +5,7 @@ let express = require('express'),
   io = require('socket.io')(http),
   connectDB = require('./dbconfig'),
   Message = require('./Message'),
-  PORT = process.env.PORT || 5000;
+  PORT = 4000;
 
 // Connect database
 connectDB();

@@ -1,6 +1,5 @@
 let mongoose = require('mongoose'),
   db = process.env.MONGODB_URI;
-
 // 'mongodb+srv://test3:test3@cluster0-swphy.mongodb.net/test?retryWrites=true&w=majority';
 
 console.log(db);
