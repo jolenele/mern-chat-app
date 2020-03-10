@@ -22,42 +22,36 @@ class App extends React.Component {
       content: '',
       username: '',
       server: 'http://localhost:5000',
-      // endpoint: 'http://localhost:4000/',
     };
-    // this.socket = socketIOClient();
   }
 
   componentDidMount() {
-    // this.socket = io(config[process.env.NODE_ENV].endpoint);
-    // const { endpoint } = this.state.endpoint;
     socket = socketIOClient.connect('http://localhost:5000/');
-    // socket.on('new_message', msg => {
-    //   console.log(msg);
-    //   this.setState(
-    //     state => ({
-    //       chat: [...state.chat, ...msg.reverse()],
-    //     }),
-    //     this.scrollToBottom
-    //   );
-    // });
+
+    // Load the 10 latest messages from the database
+    socket.on('show_message', msg => {
+      console.log(msg);
+      this.setState(
+        state => ({
+          chat: [...state.chat, ...msg.reverse()],
+        }),
+        this.scrollToBottom
+      );
+    });
+
+    // Update with new broadcasted message
+    socket.on('push_message', msg => {
+      console.log(msg);
+      this.setState(
+        state => ({
+          chat: [...state.chat, msg],
+        }),
+        this.scrollToBottom
+      );
+    });
   }
 
-  // addChat(msg) {
-  //   const { message } = msg;
-  //   this.setState(
-  //     state => ({
-  //       chat: [...state.chat, ...message.reverse()],
-  //     }),
-  //     this.scrollToBottom
-  //   );
-  // }
-  componentDidUpdate() {
-    // socket.on('new_message', message => {
-    //   console.log('this is msg ', message.content);
-    //   const { msg } = message;
-    //   this.addChat(msg);
-    // });
-  }
+  componentDidUpdate() {}
 
   handleContent(event) {
     this.setState({
