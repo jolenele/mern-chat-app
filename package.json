@@ -20,5 +20,9 @@
   "homepage": "https://github.com/jolenele/mern-chat-app#readme",
   "devDependencies": {
     "concurrently": "^5.1.0"
-  }
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  },
+  "proxy": "http://localhost:5000"
 }

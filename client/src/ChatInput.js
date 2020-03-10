@@ -1,81 +1,59 @@
 import React from 'react';
 
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import InputBase from '@material-ui/core/InputBase';
 import Toolbar from '@material-ui/core/Toolbar';
-
-import ChatIcon from '@material-ui/icons/Chat';
-import FaceIcon from '@material-ui/icons/Face';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
     bottom: 0,
     top: 'auto',
+    background: '#2E3B55',
   },
-  inputContainer: {
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    borderRadius: theme.shape.borderRadius,
+  container: {
     marginLeft: theme.spacing(1),
     position: 'relative',
     width: '100%',
   },
-  icon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
+  root: {
     color: 'inherit',
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
+  input: {
+    padding: theme.spacing(1, 1, 1, 1),
     width: '100%',
   },
 }));
 
-export default function ChatInput(props) {
+export default function ChatBar(props) {
   const classes = useStyles();
 
   return (
     <AppBar position='fixed' className={classes.appBar}>
       <Toolbar>
-        <div className={classes.inputContainer} style={{ maxWidth: '200px' }}>
-          <div className={classes.icon}>
-            <FaceIcon />
-          </div>
+        <div className={classes.container} style={{ maxWidth: '100px' }}>
           <InputBase
             onChange={props.handleName}
-            value={props.name}
-            placeholder='Name'
+            value={props.username}
+            placeholder='Your name'
             classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
+              root: classes.root,
+              input: classes.input,
             }}
-            inputProps={{ 'aria-label': 'name' }}
+            inputProps={{ 'aria-label': 'username' }}
           />
         </div>
-        <div className={classes.inputContainer}>
+        <div className={classes.container}>
           <form onSubmit={props.handleSubmit}>
-            <div className={classes.icon}>
-              <ChatIcon />
-            </div>
             <InputBase
-              onChange={props.handleMessage}
-              value={props.me}
+              onChange={props.handleContent}
+              value={props.content}
               placeholder='Type your message...'
               classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
+                root: classes.root,
+                input: classes.input,
               }}
-              inputProps={{ 'aria-label': 'message' }}
+              inputProps={{ 'aria-label': 'content' }}
             />
           </form>
         </div>

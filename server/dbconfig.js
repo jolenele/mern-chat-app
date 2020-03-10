@@ -1,6 +1,7 @@
 let mongoose = require('mongoose'),
-  db = process.env.MONGODB_URI;
-// 'mongodb+srv://test3:test3@cluster0-swphy.mongodb.net/test?retryWrites=true&w=majority';
+  // db = process.env.MONGODB_URI;
+  db =
+    'mongodb+srv://test3:test3@cluster0-swphy.mongodb.net/test?retryWrites=true&w=majority';
 
 console.log(db);
 const connectDB = async () => {
