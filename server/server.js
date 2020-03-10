@@ -1,11 +1,22 @@
 let express = require('express'),
-  app = express(),
-  http = require('http').Server(app),
   path = require('path'),
-  io = require('socket.io')(http),
+  http = require('http'),
+  socketio = require('socket.io'),
   connectDB = require('./dbconfig'),
   Message = require('./Message'),
-  PORT = process.env.PORT || 5000;
+  dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+
+const PORT = process.env.PORT || 5000;
+
+app.get('/', (req, res) => {
+  res.send('Hello');
+});
 
 // Connect database
 connectDB();
@@ -13,7 +24,7 @@ connectDB();
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 io.on('connection', socket => {
-  socket.on = 'Anonymous';
+  // socket.on = 'Anonymous';
   console.log('Socket connected');
   console.log('New user connected');
 
@@ -24,18 +35,18 @@ io.on('connection', socket => {
     .exec((err, messages) => {
       if (err) return console.error(err);
 
-      socket.emit('show_message', messages);
+      io.sockets.emit('show_message', messages);
     });
 
   // Listen to connected users for a new message.
   socket.on('new_message', msg => {
     // Create a message with the content and the name of the user.
     const message = new Message({
-      message: msg.message,
+      content: msg.content,
       name: socket.name,
     });
-
-    io.sockets.emit('new_message', message);
+    console.log(msg);
+    io.sockets.emit(' new_message', message);
     console.log('New Message : ', message);
 
     // Save the message to the database.
@@ -44,8 +55,8 @@ io.on('connection', socket => {
     });
 
     // Notify all other users about a new message.
-    socket.broadcast.emit('noti_msg', msg);
+    // socket.broadcast.emit('noti_msg', msg);
   });
 });
 
-http.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));

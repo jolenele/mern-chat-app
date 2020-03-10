@@ -1,13 +1,17 @@
 import React from 'react';
-import config from './config';
-import io from 'socket.io-client';
-
+// import config from './config';
+//import io from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-// import BottomBar from './BottomBar';
-import ChatInput from './ChatInput';
 import './App.css';
+import ChatInput from './ChatInput';
+
+let socket;
+const sendMessage = msg => {
+  socket.emit('new_message', msg);
+};
 
 class App extends React.Component {
   constructor(props) {
@@ -15,50 +19,64 @@ class App extends React.Component {
 
     this.state = {
       chat: [],
-      message: '',
-      name: '',
+      content: '',
+      username: '',
+      server: 'http://localhost:5000',
+      // endpoint: 'http://localhost:4000/',
     };
+    // this.socket = socketIOClient();
   }
 
   componentDidMount() {
-    this.socket = io(config[process.env.NODE_ENV].endpoint);
-
-    // Load the last 10 messages in the window.
-    this.socket.on('show_message', msg => {
-      this.setState(
-        state => ({
-          chat: [...state.chat, ...msg.reverse()],
-        }),
-        this.scrollToBottom
-      );
-    });
-
-    // Update the chat if a new message is broadcasted.
-    this.socket.on('noti_msg', msg => {
-      this.setState(
-        state => ({
-          chat: [...state.chat, msg],
-        }),
-        this.scrollToBottom
-      );
-    });
+    // this.socket = io(config[process.env.NODE_ENV].endpoint);
+    // const { endpoint } = this.state.endpoint;
+    socket = socketIOClient.connect('http://localhost:5000/');
+    // socket.on('new_message', msg => {
+    //   console.log(msg);
+    //   this.setState(
+    //     state => ({
+    //       chat: [...state.chat, ...msg.reverse()],
+    //     }),
+    //     this.scrollToBottom
+    //   );
+    // });
   }
 
-  // Save the message the user is typing in the input field.
-  handleMessage(event) {
+  // addChat(msg) {
+  //   const { message } = msg;
+  //   this.setState(
+  //     state => ({
+  //       chat: [...state.chat, ...message.reverse()],
+  //     }),
+  //     this.scrollToBottom
+  //   );
+  // }
+  componentDidUpdate() {
+    // socket.on('new_message', message => {
+    //   console.log('this is msg ', message.content);
+    //   const { msg } = message;
+    //   this.addChat(msg);
+    // });
+  }
+
+  handleContent(event) {
     this.setState({
-      message: event.target.value,
+      content: event.target.value,
     });
   }
 
-  //
   handleName(event) {
     this.setState({
-      name: event.target.value,
+      username: event.target.value,
     });
   }
 
-  // When the user is posting a new message.
+  // Always scoll to the bottom
+  scrollToBottom() {
+    const chat = document.getElementById('chat');
+    chat.scrollTop = chat.scrollHeight;
+  }
+
   handleSubmit(event) {
     console.log(event);
 
@@ -67,56 +85,52 @@ class App extends React.Component {
 
     this.setState(state => {
       console.log(state);
-      console.log('this', this.socket);
-      // Send the new message to the server.
-      this.socket.emit('new_message', {
-        name: state.name,
-        message: state.message,
-      });
+      console.log('this is socket ', socket);
+      // Emit event to backend
+      const message = {
+        username: this.state.username,
+        content: this.state.content,
+      };
+      console.log('submit message ', message);
+      sendMessage(message);
+      // this.addChat(message);
 
-      // Update the chat with the user's message and remove the current message.
       return {
         chat: [
           ...state.chat,
           {
-            name: state.name,
-            message: state.message,
+            username: state.username,
+            content: state.content,
           },
         ],
-        message: '',
+        content: '',
       };
     }, this.scrollToBottom);
-  }
-
-  // Always make sure the window is scrolled down to the last message.
-  scrollToBottom() {
-    const chat = document.getElementById('chat');
-    chat.scrollTop = chat.scrollHeight;
   }
 
   render() {
     return (
       <div className='App'>
         <Paper id='chat' elevation={3}>
-          {this.state.chat.map((el, index) => {
+          {this.state.chat.map((msg, index) => {
             return (
               <div key={index}>
-                <Typography variant='caption' className='name'>
-                  {el.name}
+                <Typography variant='subtitle2' align='left'>
+                  {msg.username}
                 </Typography>
-                <Typography variant='body1' className='message'>
-                  {el.message}
+                <Typography variant='body1' align='left'>
+                  {msg.content}
                 </Typography>
               </div>
             );
           })}
         </Paper>
         <ChatInput
-          message={this.state.message}
-          handleMessage={this.handleMessage.bind(this)}
+          content={this.state.content}
+          handleContent={this.handleContent.bind(this)}
           handleName={this.handleName.bind(this)}
           handleSubmit={this.handleSubmit.bind(this)}
-          name={this.state.name}
+          username={this.state.username}
         />
       </div>
     );
