@@ -3,7 +3,7 @@ let express = require('express'),
   http = require('http'),
   socketio = require('socket.io'),
   connectDB = require('./dbconfig'),
-  Message = require('./Message'),
+  Message = require('./model/Message'),
   dotenv = require('dotenv');
 
 dotenv.config();
@@ -43,7 +43,7 @@ io.on('connection', socket => {
     // Create a message with the content and the name of the user.
     const message = new Message({
       content: msg.content,
-      name: socket.name,
+      username: socket.username,
     });
     console.log(msg);
     io.sockets.emit(' new_message', message);
@@ -53,9 +53,6 @@ io.on('connection', socket => {
     message.save(err => {
       if (err) return console.error('Errooooor: ', err);
     });
-
-    // Notify all other users about a new message.
-    // socket.broadcast.emit('noti_msg', msg);
   });
 });
 
