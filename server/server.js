@@ -23,6 +23,7 @@ app.use(express.json({ extended: false }));
 // Routes
 app.get('/', (req, res) => res.send('API is runnning...'));
 app.use('/users', require('./routes/users'));
+app.use('/auth', require('./routes/auth'));
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 

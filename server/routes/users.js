@@ -1,8 +1,7 @@
 const app = require('express');
 const router = app.Router();
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 const User = require('../model/User');
-const bcrypt = require('bcryptjs');
 router.post(
   '/',
   [
@@ -29,9 +28,13 @@ router.post(
       if (user) {
         res.status(400).json({ err: [{ msg: 'User already exist' }] });
       }
-      // // Encrypt password
-      // const saltedpw = await bcrypt.genSalt(10);
-      // user.password = await bcrypt.hash(password, saltedpw);
+
+      user = new User({
+        username,
+        email,
+        password,
+      });
+
       await user.save();
 
       res.send('User registered...');
