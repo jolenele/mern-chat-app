@@ -5,8 +5,6 @@ let Log = new Schema(
   {
     type: String,
     source: String,
-    category: String,
-    event: String,
     user: String,
     room: String,
   },

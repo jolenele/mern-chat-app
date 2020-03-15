@@ -2,9 +2,8 @@ let express = require('express'),
   path = require('path'),
   http = require('http'),
   socketio = require('socket.io'),
-  connectDB = require('./dbconfig'),
-  Message = require('./model/Message'),
-  dotenv = require('dotenv');
+  connectDB = require('./db');
+dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -22,55 +21,54 @@ app.use(express.json({ extended: false }));
 
 // Routes
 app.get('/', (req, res) => res.send('API is runnning...'));
-app.use('/users', require('./routes/users'));
-app.use('/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/chats');
+app.use('/api/eventlog');
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 io.on('connection', socket => {
   socket.username = 'Anonymous';
-  socket.room = 'public';
   socket.join('public');
   console.log('Socket connected');
   console.log('New user connected');
 
-  // Get the last 10 messages from the database.
-  Message.find({ room: socket.room })
-    .sort({ createdAt: -1 })
-    .limit(10)
-    .exec((err, messages) => {
-      if (err) return console.error(err);
-      // io.sockets.to(socket.room).emit('show_message', messages);
-      socket.to(socket.room).emit('show_message', messages);
-    });
-
-  // Listen to connected users for a new message.
+  // New Message
   socket.on('new_message', msg => {
-    const message = new Message({
-      content: msg.content,
-      username: socket.username,
-    });
-    // Save the message to the database.
-    message.save(err => {
-      if (err) return console.error(err);
-    });
-    socket.broadcast.to(socket.room).emit('push_message', msg);
-  });
-  socket.on('change_room', data => {
-    socket.leave(socket.room);
-    socket.room = data.room;
-    socket.join(data.room);
-    Message.find({ room: socket.room })
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .exec((err, messages) => {
-        if (err) return console.error(err);
-        io.sockets.to(socket.room).emit('show_message', messages);
-      });
+    io.in(msg.room).emit('new_message', msg);
   });
 
-  socket.on('typing', data => {
-    socket.broadcast.emit('typing', { username: socket.username });
+  // New user join in
+  socket.on('new_user', user => {
+    io.emit('new_user', user);
+    console.log('User ', JSON.stringify(user), ' has joined in');
+  });
+
+  // Join Room
+  socket.on('join_room', joinRoom => {
+    const { room } = joinRoom;
+    socket.join(joinRoom.room);
+    io.in(room).emit('join_room', joinRoom);
+    console.log('Join room ', JSON.stringify(joinRoom));
+  });
+
+  // Leave Room
+  socket.on('leave_room', leaveRoom => {
+    const { room } = leaveRoom;
+    socket.leave(leaveRoom.room);
+    io.in(room).emit('leave_room', leaveRoom);
+    console.log('Leave room ', JSON.stringify(leaveRoom));
+  });
+
+  // User left
+  socket.on('user_left', user => {
+    io.emit('user_left', user);
+  });
+
+  // Disconnect
+  socket.on('disconnect', () => {
+    console.log('User has left...');
   });
 });
 
