@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
+import moment from 'moment';
+import PersonIcon from '@material-ui/icons/Person';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import Button from '@material-ui/core/Button';
+import SendIcon from '@material-ui/icons/Send';
+import Input from '@material-ui/core/Input';
+import { Context } from '../state/globalState';
+import ChatBar from './ChatBar';
 
-export const ChatBox = () => {
+const ChatBox = () => {
   const {
     chats,
     activeRoom,
@@ -11,7 +22,7 @@ export const ChatBox = () => {
     token,
     users,
     getUsers,
-  } = useContext(GlobalContext);
+  } = useContext(Context);
   const [message, setMessage] = useState([]);
   const [navigate, setNavigate] = useState(false);
 
@@ -20,12 +31,12 @@ export const ChatBox = () => {
     getUsers(token);
   }, []);
 
-  handleLogout = () => {
+  const handleLogout = () => {
     sendUserLeft(user);
     setNavigate(true);
   };
 
-  handleSubmit = () => {
+  const handleSubmit = () => {
     sendChatAction({
       author: user,
       message: message,
@@ -34,7 +45,7 @@ export const ChatBox = () => {
     setMessage('');
   };
 
-  handleContent = log => {
+  const handleContent = log => {
     if (log.keyCode === 13) {
       handleSubmit();
     }
@@ -47,39 +58,11 @@ export const ChatBox = () => {
 
   return (
     <div id='chatBox'>
-      <Toolbar
-        title={activeRoom}
-        key='toolbar'
-        rightItems={[
-          <div>
-            <Typography key='user' variant='body1'>
-              Hello, {user}
-            </Typography>
-            <Button
-              key='buttonLogout'
-              color='secondary'
-              variant='outlined'
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          </div>,
-        ]}
-        leftItems={[
-          <div>
-            <Typography key='user_counts' variant='body1'>
-              <PersonIcon key='Icon'></PersonIcon>
-              {users.length}
-            </Typography>
-          </div>,
-        ]}
-      />
-
-      <div>
+      <div className='message-list'>
         {chats
           .filter(chat => chat.room === activeRoom)
           .map(chat => (
-            <div key={chat.id}>
+            <div key={chat._id} className='message-list-container'>
               <Chip
                 icon={<FaceIcon />}
                 key='icon'
@@ -92,7 +75,7 @@ export const ChatBox = () => {
             </div>
           ))}
       </div>
-      <ChatInput
+      <ChatBar
         content={this.state.content}
         handleContent={this.handleContent.bind(this)}
         handleSubmit={this.handleSubmit.bind(this)}
@@ -101,3 +84,5 @@ export const ChatBox = () => {
     </div>
   );
 };
+
+export default ChatBox;

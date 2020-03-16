@@ -11,7 +11,7 @@ import './App.css';
 // import ChatInput from './components/ChatBar';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Chat from './components/chats/Chat';
+import ChatBox from './components/chats/ChatBox';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -40,7 +40,7 @@ const App = () => {
           <Route exact path='/' component={Landing} />
           <section className='container'>
             <Switch>
-              <Route exact path='/chat' component={Chat} />
+              <Route exact path='/chatBox' component={ChatBox} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
             </Switch>
