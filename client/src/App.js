@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-// import Alert from './components/layout/Alert';
-import { ChatBox } from './components/chats/ChatBox';
+import ChatBox from './components/chats/ChatBox';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -39,7 +38,7 @@ const App = () => {
           <Route exact path='/' component={Landing} />
           <section className='container'>
             <Switch>
-              <Route exact path='/chatBox' component={ChatBox} />
+              <Route exact path='/chats' component={ChatBox} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
             </Switch>
