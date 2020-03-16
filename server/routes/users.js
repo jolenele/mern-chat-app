@@ -45,23 +45,19 @@ router.post(
 
       await user.save();
 
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
+      // const payload = {
+      //   user: {
+      //     id: user.id,
+      //   },
+      // };
 
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 100000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      // jwt.sign(payload, config.get, { expiresIn: 3600 }, (err, token) => {
+      //   if (err) throw err;
+      //   res.json({ token });
+      // });
 
-      res.send('User registered...');
+      // res.send('User registered...');
+      // res.send(token);
     } catch (err) {
       console.log(err);
       res.status(500).send('Erroooor Server');

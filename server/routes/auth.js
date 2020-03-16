@@ -8,6 +8,14 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../model/User');
 
+const verifyToken = (exports.verifyToken = token =>
+  new Promise((resolve, reject) => {
+    jwt.default.verify(token, process.env.TOKEN, (err, payload) => {
+      if (err) return reject(err);
+      resolve(payload);
+    });
+  }));
+
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -55,13 +63,13 @@ router.post(
         },
       };
 
-      jwtSecret = 'myJWT';
+      // jwtSecret = 'myJWT';
 
-      const token = jwt.sign(payload, config.get('jwtSecret'), {
-        expiresIn: 360000,
-      });
+      // const token = jwt.sign(payload, config.get('jwtSecret'), {
+      //   expiresIn: 360000,
+      // });
 
-      res.json({ token });
+      // res.json({ token });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
