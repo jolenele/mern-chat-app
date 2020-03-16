@@ -46,25 +46,55 @@ export const ChatBox = () => {
   }
 
   return (
-    <div>
-      <Paper id='chat' elevation={3}>
-        {this.state.chat.map((msg, index) => {
-          return (
-            <div key={index}>
-              <Typography variant='subtitle2' align='left'>
-                {msg.username}
-              </Typography>
-              <Typography variant='body1' align='left'>
-                {msg.content}
+    <div id='chatBox'>
+      <Toolbar
+        title={activeRoom}
+        key='toolbar'
+        rightItems={[
+          <div>
+            <Typography key='user' variant='body1'>
+              Hello, {user}
+            </Typography>
+            <Button
+              key='buttonLogout'
+              color='secondary'
+              variant='outlined'
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>,
+        ]}
+        leftItems={[
+          <div>
+            <Typography key='user_counts' variant='body1'>
+              <PersonIcon key='Icon'></PersonIcon>
+              {users.length}
+            </Typography>
+          </div>,
+        ]}
+      />
+
+      <div>
+        {chats
+          .filter(chat => chat.room === activeRoom)
+          .map(chat => (
+            <div key={chat.id}>
+              <Chip
+                icon={<FaceIcon />}
+                key='icon'
+                label={chat.author}
+                variant='outlined'
+              />
+              <Typography className='inline' key='message' variant='body1'>
+                {chat.message}
               </Typography>
             </div>
-          );
-        })}
-      </Paper>
+          ))}
+      </div>
       <ChatInput
         content={this.state.content}
         handleContent={this.handleContent.bind(this)}
-        handleName={this.handleName.bind(this)}
         handleSubmit={this.handleSubmit.bind(this)}
         username={this.state.username}
       />

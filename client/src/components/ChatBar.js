@@ -55,16 +55,6 @@ export default function ChatBar(props) {
           <div className={classes.icon}>
             <FaceIcon />
           </div>
-          <InputBase
-            onChange={props.handleName}
-            value={props.name}
-            placeholder='Name'
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'name' }}
-          />
         </div>
         <div className={classes.inputContainer}>
           <form onSubmit={props.handleSubmit}>
