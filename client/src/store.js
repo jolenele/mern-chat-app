@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/chats';
-import setAuthToken from './registration/authToken';
+import setAuthToken from './actions/setAuthToken';
 
 // prevent auth error on first run of subscription
 const initialState = { auth: { token: null } };

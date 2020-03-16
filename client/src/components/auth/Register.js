@@ -1,29 +1,30 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { setAlert } from '../../registration/alert';
-import { register } from '../../registration/auth';
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     passwordCheck: '',
   });
 
-  const { name, email, password, passwordCheck } = formData;
+  const { username, email, password, passwordCheck } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (password !== passwordCheck) {
       setAlert('Password does not match', 'danger');
     } else {
-      register({ name, email, password });
+      register({ username, email, password });
     }
   };
 
@@ -34,46 +35,52 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
-      <p className='lead'>
-        <i className='fas fa-user' /> Create Your Account
-      </p>
-      <form className='form' onSubmit={e => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='User Name'
-            name='name'
-            value={name}
-            onChange={e => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='email'
-            placeholder='Email Address'
-            name='email'
-            value={email}
-            onChange={e => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            value={password}
-            onChange={e => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            name='passwordCheck'
-            value={passwordCheck}
-            onChange={e => onChange(e)}
-          />
-        </div>
+      <form className='form' onSubmit={e => handleSubmit(e)}>
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          id='username'
+          label='User Name'
+          name='username'
+          value={username}
+          onChange={e => onChange(e)}
+        />
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          id='email'
+          label='Your Email'
+          name='email'
+          value={email}
+          onChange={e => onChange(e)}
+        />
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          id='password'
+          label='Password'
+          name='password'
+          value={password}
+          onChange={e => onChange(e)}
+          minLength='6'
+        />
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          id='passwordCheck'
+          label='Confirm Password'
+          name='passwordCheck'
+          value={passwordCheck}
+          onChange={e => onChange(e)}
+        />
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
       <p className='my-1'>

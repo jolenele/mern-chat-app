@@ -2,27 +2,26 @@ import React, { Fragment, useEffect } from 'react';
 import NavBar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Resgister from './components/auth/Register';
-// import socketIOClient from 'socket.io-client';
-// import Paper from '@material-ui/core/Paper';
-// import Typography from '@material-ui/core/Typography';
-
 import './App.css';
-// import ChatInput from './components/ChatBar';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import ChatBox from './components/chats/ChatBox';
+// import Alert from './components/layout/Alert';
+import { ChatBox } from './components/chats/ChatBox';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
-import { loadUser } from './registration/auth';
-import setAuthToken from './registration/authToken';
+import { loadUser } from './actions/auth';
+import setAuthToken from './actions/setAuthToken';
 
 // let socket;
 // const sendMessage = msg => {
 //   socket.emit('new_message', msg);
 // };
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   useEffect(() => {
@@ -50,6 +49,9 @@ const App = () => {
     </Provider>
   );
 };
+
+export default App;
+
 // constructor(props) {
 //   super(props);
 
@@ -165,5 +167,3 @@ const App = () => {
 //     </div>
 //   );
 // }
-
-export default App;

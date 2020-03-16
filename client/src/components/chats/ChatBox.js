@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import moment from 'moment';
-import PersonIcon from '@material-ui/icons/Person';
 import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
-import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
-import Input from '@material-ui/core/Input';
-import { Context } from '../state/globalState';
+
+import Paper from '@material-ui/core/Paper';
+import { Context } from '../../state/globalState';
 import ChatBar from './ChatBar';
 
-const ChatBox = () => {
+export const ChatBox = () => {
   const {
     chats,
     activeRoom,
@@ -58,23 +53,21 @@ const ChatBox = () => {
 
   return (
     <div id='chatBox'>
-      <div className='message-list'>
-        {chats
-          .filter(chat => chat.room === activeRoom)
-          .map(chat => (
-            <div key={chat._id} className='message-list-container'>
-              <Chip
-                icon={<FaceIcon />}
-                key='icon'
-                label={chat.author}
-                variant='outlined'
-              />
-              <Typography className='inline' key='message' variant='body1'>
-                {chat.message}
+      <Paper id='chat' elevation={3}>
+        {this.state.chats.map((msg, index) => {
+          return (
+            <div key={index}>
+              <Typography variant='subtitle2' align='left'>
+                {msg.username}
+              </Typography>
+              <Typography variant='body1' align='left'>
+                {msg.content}
               </Typography>
             </div>
-          ))}
-      </div>
+          );
+        })}
+      </Paper>
+
       <ChatBar
         content={this.state.content}
         handleContent={this.handleContent.bind(this)}
@@ -84,5 +77,3 @@ const ChatBox = () => {
     </div>
   );
 };
-
-export default ChatBox;

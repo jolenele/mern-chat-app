@@ -12,8 +12,8 @@ const Landing = ({ isAuthenticated }) => {
     <section className='landing'>
       <div className='dark-overlay'>
         <div className='landing-inner'>
-          <h1 className='x-large'>User Connector</h1>
-          <p className='lead'>Create a developer profile</p>
+          <h1 className='x-large'>MERN Chat App</h1>
+          <p className='lead'>Connect Developers Together</p>
           <div className='buttons'>
             <Link to='/register' className='btn btn-primary'>
               Sign Up

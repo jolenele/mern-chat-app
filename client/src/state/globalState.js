@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useState } from 'react';
-import AppReducer from './AppReducer';
+// import combineReducers from '../../reducers/index';
+import chats from '../reducers/chats';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
@@ -37,7 +38,7 @@ const userLeft = user => {
 export const Context = createContext();
 
 export const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(AppReducer, init);
+  const [state, dispatch] = useReducer(chats, init);
   const [user, setUser] = useState('');
   const [activeRoom, changeActiveRoom] = useState('General');
   const [token, setToken] = useState('');
