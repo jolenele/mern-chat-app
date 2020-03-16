@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import NavBar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -24,14 +24,12 @@ import setAuthToken from './registration/authToken';
 // };
 
 const App = () => {
-  const useEffect =
-    (() => {
-      if (localStorage.token) {
-        setAuthToken(localStorage.token);
-        store.dispatch(loadUser());
-      }
-    },
-    []);
+  useEffect(() => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      store.dispatch(loadUser());
+    }
+  }, []);
 
   return (
     <Provider store={store}>

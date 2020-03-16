@@ -7,28 +7,28 @@ import PropTypes from 'prop-types';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
-    password2: '',
+    passwordCheck: '',
   });
 
-  const { username, email, password, password2 } = formData;
+  const { name, email, password, passwordCheck } = formData;
 
   const onChange = e =>
-    setFormData({ ...formData, [e.target.username]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (password !== password2) {
-      setAlert('Passwords do not match', 'danger');
+    if (password !== passwordCheck) {
+      setAlert('Password does not match', 'danger');
     } else {
-      register({ username, email, password });
+      register({ name, email, password });
     }
   };
 
   if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/chats' />;
   }
 
   return (
@@ -42,8 +42,8 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
           <input
             type='text'
             placeholder='User Name'
-            name='username'
-            value={username}
+            name='name'
+            value={name}
             onChange={e => onChange(e)}
           />
         </div>
@@ -69,8 +69,8 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
           <input
             type='password'
             placeholder='Confirm Password'
-            name='password2'
-            value={password2}
+            name='passwordCheck'
+            value={passwordCheck}
             onChange={e => onChange(e)}
           />
         </div>

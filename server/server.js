@@ -2,7 +2,7 @@ let express = require('express'),
   path = require('path'),
   http = require('http'),
   socketio = require('socket.io'),
-  connectDB = require('./database/db');
+  connectDB = require('./config/db');
 dotenv = require('dotenv');
 
 dotenv.config();
