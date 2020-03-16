@@ -2,7 +2,7 @@ let express = require('express'),
   path = require('path'),
   http = require('http'),
   socketio = require('socket.io'),
-  connectDB = require('./db');
+  connectDB = require('./database/db');
 dotenv = require('dotenv');
 
 dotenv.config();
@@ -23,8 +23,8 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('API is runnning...'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chats');
-app.use('/api/eventlog');
+// app.use('/api/chats');
+// app.use('/api/eventlog');
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 

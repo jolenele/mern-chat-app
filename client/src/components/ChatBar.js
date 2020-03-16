@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import InputBase from '@material-ui/core/InputBase';
 import Toolbar from '@material-ui/core/Toolbar';
+import ChatIcon from '@material-ui/icons/Chat';
+import FaceIcon from '@material-ui/icons/Face';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
