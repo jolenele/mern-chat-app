@@ -3,41 +3,51 @@ import NavBar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
-import Resgister from './components/auth/Register';
-import socketIOClient from 'socket.io-client';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+// import Resgister from './components/auth/Register';
+// import socketIOClient from 'socket.io-client';
+// import Paper from '@material-ui/core/Paper';
+// import Typography from '@material-ui/core/Typography';
 
 import './App.css';
-import ChatInput from './components/ChatBar';
+// import ChatInput from './components/ChatBar';
 import Register from './components/auth/Register';
 
-let socket;
-const sendMessage = msg => {
-  socket.emit('new_message', msg);
-};
+// Redux
+import { Provider } from 'react-redux';
+import store from './store';
+import { loadUser } from './registration/auth';
+import setAuthToken from './registration/authToken';
+
+// let socket;
+// const sendMessage = msg => {
+//   socket.emit('new_message', msg);
+// };
 
 const App = () => {
-  // useEffect(() => {
-  //   if (localStorage.token) {
-  //     setAuthToken(localStorage.token);
-  //     store.dispatch(loadUser());
-  //   }
-  // }, []);
+  const useEffect =
+    (() => {
+      if (localStorage.token) {
+        setAuthToken(localStorage.token);
+        store.dispatch(loadUser());
+      }
+    },
+    []);
 
   return (
-    <Router>
-      <Fragment>
-        <NavBar />
-        <Route exact path='/' component={Landing} />
-        <section className='container'>
-          <Switch>
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/login' component={Login} />
-          </Switch>
-        </section>
-      </Fragment>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <NavBar />
+          <Route exact path='/' component={Landing} />
+          <section className='container'>
+            <Switch>
+              <Route exact path='/register' component={Register} />
+              <Route exact path='/login' component={Login} />
+            </Switch>
+          </section>
+        </Fragment>
+      </Router>
+    </Provider>
   );
 };
 // constructor(props) {
