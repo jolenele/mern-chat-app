@@ -8,7 +8,8 @@ module.exports = function(req, res, next) {
 
   // Verify token
   try {
-    jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
+    let privatekey = 'secrettoken';
+    jwt.verify(token, privatekey, (error, decoded) => {
       if (error) {
         res.status(401).json({ msg: 'Token is not valid' });
       } else {

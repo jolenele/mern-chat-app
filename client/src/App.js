@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react';
 import NavBar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Login from './components/auth/Login';
 // import Resgister from './components/auth/Register';
 // import socketIOClient from 'socket.io-client';
 // import Paper from '@material-ui/core/Paper';
@@ -11,6 +10,8 @@ import Login from './components/auth/Login';
 import './App.css';
 // import ChatInput from './components/ChatBar';
 import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Chat from './components/chats/Chat';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -39,6 +40,7 @@ const App = () => {
           <Route exact path='/' component={Landing} />
           <section className='container'>
             <Switch>
+              <Route exact path='/chat' component={Chat} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
             </Switch>
