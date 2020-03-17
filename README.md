@@ -35,5 +35,5 @@ mern-chat-app-ngale
 
 3. What I have problems with or need to improve on:
 - React and Redux - I spent most of the time learning and debugging React and Redux
-- Establish the socket connection from client to server though React and Redux
+- Establish the socket connection from client to server though React and Redux (resovled)
 - The wavering in using functional vs class React component
