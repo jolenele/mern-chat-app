@@ -8,12 +8,12 @@ Nga Le - 101102629
 
 # Deployment
 
-https://chat-app-mern-socketio.herokuapp.com/
+https://mern-chat-app-ngale.herokuapp.com/
 
 # Run the application
 
 1. Clone repo at:
-https://github.com/jolenele/mern-chat-app.git
+mern-chat-app-ngale
 
 2. Run 'npm run dev' on root directory 
 
@@ -35,5 +35,5 @@ https://github.com/jolenele/mern-chat-app.git
 
 3. What I have problems with or need to improve on:
 - React and Redux - I spent most of the time learning and debugging React and Redux
-- Establish the socket connection from client to server though React and Redux
+- Establish the socket connection from client to server though React and Redux (resovled)
 - The wavering in using functional vs class React component
