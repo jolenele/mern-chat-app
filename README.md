@@ -13,7 +13,7 @@ https://mern-chat-app-ngale.herokuapp.com/
 # Run the application
 
 1. Clone repo at:
-mern-chat-app-ngale
+https://github.com/jolenele/mern-chat-app.git
 
 2. Run 'npm run dev' on root directory 
 
@@ -28,6 +28,7 @@ mern-chat-app-ngale
 - Authentication with JWT Token - Create new account and login
 
 2. What I have not finished:
+- Display the Chat Box
 - Retrieve and set messages from server to client side
 - Display event logs
 - Display chat history
