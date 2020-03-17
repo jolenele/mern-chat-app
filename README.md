@@ -8,12 +8,12 @@ Nga Le - 101102629
 
 # Deployment
 
-https://chat-app-mern-socketio.herokuapp.com/
+https://mern-chat-app-ngale.herokuapp.com/
 
 # Run the application
 
 1. Clone repo at:
-https://github.com/jolenele/mern-chat-app.git
+mern-chat-app-ngale
 
 2. Run 'npm run dev' on root directory 
 
