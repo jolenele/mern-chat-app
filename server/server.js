@@ -20,7 +20,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // Routes
-app.get('/', (req, res) => res.send('API is runnning...'));
+// app.get('/', (req, res) => res.send('API is runnning...'));
 app.use('/api/users', require('./routes/users')); // register new users
 app.use('/api/getUser', require('./routes/getUser')); // retrieve users
 app.use('/api/auth', require('./routes/auth'));
@@ -28,7 +28,15 @@ app.use('/api/chats', require('./routes/chats'));
 app.use('/api/log', require('./routes/log'));
 app.use('/api/room', require('./routes/room'));
 
-app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, '..', 'client', 'build', 'index.html')
+    );
+  });
+}
 
 io.on('connection', socket => {
   socket.username = 'Anonymous';
