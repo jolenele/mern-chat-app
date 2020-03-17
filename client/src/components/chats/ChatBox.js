@@ -2,26 +2,20 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import { Context } from '../../state/globalState';
-import ChatBar from './ChatBar';
+// import ChatBar from './ChatBar';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 
 const ChatBox = () => {
-  const {
-    chats,
-    activeRoom,
-    sendChatAction,
-    getChats,
-    user,
-    token,
-    getUsers,
-  } = useContext(Context);
+  const { chats, activeRoom, sendChatAction, getChats, user, token, getUsers } =
+    useContext(Context) || {};
   const [message, setMessage] = useState([]);
   const [navigate] = useState(false);
 
   useEffect(() => {
+    console.log('chats ', chats);
     getChats(token);
     getUsers(token);
   }, []);

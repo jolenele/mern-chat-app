@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useState } from 'react';
-// import combineReducers from '../../reducers/index';
 import chats from '../reducers/chats';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
@@ -52,7 +51,7 @@ export const Provider = ({ children }) => {
       addChat(msg, token);
     });
 
-    socket.on('new_message', newUser => {
+    socket.on('new_user', newUser => {
       const { username, token } = newUser;
       localStorage.setItem('token', token);
       const log = {
@@ -145,7 +144,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.get(`${server}/api/users`, config);
+      const res = await axios.get(`${server}/api/getuser`, config);
 
       dispatch({
         type: 'GET_USERS',
@@ -166,7 +165,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.get(`${server}/api/eventlog`, config);
+      const res = await axios.get(`${server}/api/log`, config);
 
       dispatch({
         type: 'GET_EVENTS',
@@ -209,7 +208,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.post(`${server}/api/chat`, chat, config);
+      const res = await axios.post(`${server}/api/chats`, chat, config);
 
       dispatch({
         type: 'ADD_CHAT',

@@ -156,7 +156,7 @@ export default App;
 //           );
 //         })}
 //       </Paper>
-//       <ChatInput
+//       <ChatBar
 //         content={this.state.content}
 //         handleContent={this.handleContent.bind(this)}
 //         handleName={this.handleName.bind(this)}
