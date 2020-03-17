@@ -2,8 +2,8 @@ let express = require('express'),
   path = require('path'),
   http = require('http'),
   socketio = require('socket.io'),
-  connectDB = require('./db');
-dotenv = require('dotenv');
+  connectDB = require('./database/db'),
+  dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -21,10 +21,12 @@ app.use(express.json({ extended: false }));
 
 // Routes
 app.get('/', (req, res) => res.send('API is runnning...'));
-app.use('/api/users', require('./routes/users'));
+app.use('/api/users', require('./routes/users')); // register new users
+app.use('/api/getUser', require('./routes/getUser')); // retrieve users
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chats');
-app.use('/api/eventlog');
+app.use('/api/chats', require('./routes/chats'));
+app.use('/api/log', require('./routes/log'));
+app.use('/api/room', require('./routes/room'));
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 

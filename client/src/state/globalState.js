@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useState } from 'react';
-import AppReducer from './AppReducer';
+import chats from '../reducers/chats';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
@@ -37,7 +37,7 @@ const userLeft = user => {
 export const Context = createContext();
 
 export const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(AppReducer, init);
+  const [state, dispatch] = useReducer(chats, init);
   const [user, setUser] = useState('');
   const [activeRoom, changeActiveRoom] = useState('General');
   const [token, setToken] = useState('');
@@ -51,7 +51,7 @@ export const Provider = ({ children }) => {
       addChat(msg, token);
     });
 
-    socket.on('new_message', newUser => {
+    socket.on('new_user', newUser => {
       const { username, token } = newUser;
       localStorage.setItem('token', token);
       const log = {
@@ -78,7 +78,7 @@ export const Provider = ({ children }) => {
     socket.on('leave_room', leaveRoom => {
       const { user, room } = leaveRoom;
       if (user) {
-        const event = {
+        const log = {
           type: 'User leaves room',
           user: user,
           source: room,
@@ -95,7 +95,7 @@ export const Provider = ({ children }) => {
         source: 'Main Page',
       };
       const token = localStorage.getItem('token');
-      addEvent(event, token);
+      addLog(event, token);
       localStorage.removeItem('token');
     });
   }
@@ -144,7 +144,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.get(`${server}/api/users`, config);
+      const res = await axios.get(`${server}/api/getuser`, config);
 
       dispatch({
         type: 'GET_USERS',
@@ -165,7 +165,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.get(`${server}/api/eventlog`, config);
+      const res = await axios.get(`${server}/api/log`, config);
 
       dispatch({
         type: 'GET_EVENTS',
@@ -208,7 +208,7 @@ export const Provider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.post(`${server}/api/chat`, chat, config);
+      const res = await axios.post(`${server}/api/chats`, chat, config);
 
       dispatch({
         type: 'ADD_CHAT',
