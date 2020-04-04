@@ -1,50 +1,67 @@
-export default (state, action) => {
-  switch (action.type) {
-    case 'GET_CHATS':
+import {
+  GET_CHATS,
+  GET_ROOMS,
+  GET_USERS,
+  ADD_CHAT,
+  GET_LOGS,
+  ROOM_ERROR,
+  LOG_ERROR,
+  CHAT_ERROR,
+} from '../actions/types';
+
+export default function (state, action) {
+  const { type, payload } = action;
+
+  switch (type) {
+    case GET_CHATS:
       return {
         ...state,
         loading: false,
-        chats: action.payload,
+        chats: payload,
       };
-    case 'GET_ROOMS':
+    case GET_ROOMS:
       return {
         ...state,
         loading: false,
-        rooms: action.payload,
+        rooms: payload,
       };
-    case 'GET_USERS':
+    case GET_USERS:
       return {
         ...state,
         loading: false,
-        users: action.payload,
+        users: payload,
       };
-    case 'GET_LOGS':
+    case GET_LOGS:
       return {
         ...state,
         loading: false,
-        logs: action.payload,
+        logs: payload,
       };
-    case 'ADD_CHAT':
+    case ADD_CHAT:
       return {
         ...state,
-        chats: [...state.chats, action.payload],
+        loading: false,
+        chats: [...state.chats, payload],
       };
-    case 'CHAT_ERROR':
+    case ROOM_ERROR:
       return {
         ...state,
-        error: action.payload,
+        loading: false,
+        error: payload,
       };
-    case 'ROOM_ERROR':
+    case LOG_ERROR:
       return {
         ...state,
-        error: action.payload,
+        loading: false,
+        error: payload,
       };
-    case 'LOG_ERROR':
+    case CHAT_ERROR:
       return {
         ...state,
-        error: action.payload,
+        loading: false,
+        error: payload,
       };
     default:
       return state;
   }
-};
+}

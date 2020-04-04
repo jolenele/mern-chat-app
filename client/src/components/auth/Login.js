@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import TextField from '@material-ui/core/TextField';
+import { Button } from 'semantic-ui-react';
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -13,10 +14,10 @@ const Login = ({ login, isAuthenticated }) => {
 
   const { email, password } = formData;
 
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     login(email, password);
   };
@@ -27,35 +28,33 @@ const Login = ({ login, isAuthenticated }) => {
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Sign In</h1>
-      <form className='form' onSubmit={e => handleSubmit(e)}>
-        <TextField
-          variant='outlined'
-          margin='normal'
-          required
-          fullWidth
-          id='email'
-          label='Your email'
-          name='email'
-          value={email}
-          onChange={e => onChange(e)}
-        />
-        <TextField
-          type='password'
-          variant='outlined'
-          margin='normal'
-          required
-          fullWidth
-          id='password'
-          label='Your password'
-          name='password'
-          value={password}
-          minLength='6'
-          onChange={e => onChange(e)}
-        />
-        <input type='submit' className='btn btn-primary' value='Login' />
-      </form>
-      <p className='my-1'>
+      <h1>Login</h1>
+      <TextField
+        variant='outlined'
+        margin='normal'
+        required
+        fullWidth
+        id='email'
+        label='Your email'
+        name='email'
+        value={email}
+        onChange={(e) => onChange(e)}
+      />
+      <TextField
+        type='password'
+        variant='outlined'
+        margin='normal'
+        required
+        fullWidth
+        id='password'
+        label='Your password'
+        name='password'
+        value={password}
+        minLength='6'
+        onChange={(e) => onChange(e)}
+      />
+      <Button onSubmit={(e) => handleSubmit(e)}>Login</Button>
+      <p>
         Don't have an account? <Link to='/register'>Sign Up</Link>
       </p>
     </Fragment>
@@ -67,7 +66,7 @@ Login.propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 

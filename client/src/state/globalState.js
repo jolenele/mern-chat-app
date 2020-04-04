@@ -1,7 +1,18 @@
 import React, { createContext, useReducer, useState } from 'react';
-import chats from '../reducers/chats';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
+import combineReducers from '../reducers/index';
+import {
+  GET_CHATS,
+  GET_ROOMS,
+  GET_USERS,
+  ADD_CHAT,
+  GET_LOGS,
+  ROOM_ERROR,
+  LOG_ERROR,
+  CHAT_ERROR,
+  AUTH_ERROR,
+} from '../actions/types';
 
 const init = {
   chats: [],
@@ -12,46 +23,45 @@ const init = {
   loading: true,
 };
 
-let socket;
+export const Context = createContext();
 
-const newChat = msg => {
+let socket;
+const newChat = (msg) => {
   socket.emit('new_message', msg);
 };
 
-const newUser = user => {
+const newUser = (user) => {
   socket.emit('new_user', user);
 };
 
-const joinRoom = joinRoom => {
+const joinRoom = (joinRoom) => {
   socket.emit('join_room', joinRoom);
 };
 
-const userLeaveRoom = leaveRoom => {
+const userLeaveRoom = (leaveRoom) => {
   socket.emit('leave_room', leaveRoom);
 };
 
-const userLeft = user => {
+const userLeft = (user) => {
   socket.emit('user_left', user);
 };
 
-export const Context = createContext();
-
 export const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(chats, init);
+  const [state, dispatch] = useReducer(combineReducers, init);
+  const [room, changeRoom] = useState('Public');
   const [user, setUser] = useState('');
-  const [activeRoom, changeActiveRoom] = useState('General');
   const [token, setToken] = useState('');
   const server = 'http://localhost:5000';
 
   // Initialize socket client
   if (!socket) {
     socket = socketIOClient.connect(server);
-    socket.on('new_message', msg => {
+    socket.on('new_message', (msg) => {
       const token = localStorage.getItem('token');
       addChat(msg, token);
     });
 
-    socket.on('new_user', newUser => {
+    socket.on('new_user', (newUser) => {
       const { username, token } = newUser;
       localStorage.setItem('token', token);
       const log = {
@@ -62,7 +72,7 @@ export const Provider = ({ children }) => {
       addLog(log, token);
     });
 
-    socket.on('join_room', joinRoom => {
+    socket.on('join_room', (joinRoom) => {
       const { user, room } = joinRoom;
       if (user) {
         const log = {
@@ -75,7 +85,7 @@ export const Provider = ({ children }) => {
       }
     });
 
-    socket.on('leave_room', leaveRoom => {
+    socket.on('leave_room', (leaveRoom) => {
       const { user, room } = leaveRoom;
       if (user) {
         const log = {
@@ -88,7 +98,7 @@ export const Provider = ({ children }) => {
       }
     });
 
-    socket.on('user_left', leftUser => {
+    socket.on('user_left', (leftUser) => {
       const event = {
         type: 'User Left',
         user: leftUser,
@@ -116,7 +126,7 @@ export const Provider = ({ children }) => {
   };
 
   // Get data from database
-  const getChats = async token => {
+  const getChats = async (token) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -126,18 +136,18 @@ export const Provider = ({ children }) => {
       const res = await axios.get(`${server}/api/chats`, config);
 
       dispatch({
-        type: 'GET_CHATS',
+        type: GET_CHATS,
         payload: res.data.data,
       });
     } catch (err) {
       dispatch({
-        type: 'CHAT_ERROR',
+        type: CHAT_ERROR,
         payload: err.response.data.error,
       });
     }
   };
 
-  const getUsers = async token => {
+  const getUsers = async (token) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -147,18 +157,18 @@ export const Provider = ({ children }) => {
       const res = await axios.get(`${server}/api/getuser`, config);
 
       dispatch({
-        type: 'GET_USERS',
+        type: GET_USERS,
         payload: res.data.data,
       });
     } catch (err) {
       dispatch({
-        type: 'USER_ERROR',
+        type: AUTH_ERROR,
         payload: err.response.data.error,
       });
     }
   };
 
-  const getEvents = async token => {
+  const getEvents = async (token) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -168,18 +178,18 @@ export const Provider = ({ children }) => {
       const res = await axios.get(`${server}/api/log`, config);
 
       dispatch({
-        type: 'GET_EVENTS',
+        type: GET_LOGS,
         payload: res.data.data,
       });
     } catch (err) {
       dispatch({
-        type: 'EVENT_ERROR',
+        type: LOG_ERROR,
         payload: err.response.data.error,
       });
     }
   };
 
-  const getRooms = async token => {
+  const getRooms = async (token) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -189,12 +199,12 @@ export const Provider = ({ children }) => {
       const res = await axios.get(`${server}/api/room`, config);
 
       dispatch({
-        type: 'GET_ROOMS',
+        type: GET_ROOMS,
         payload: res.data.data,
       });
     } catch (err) {
       dispatch({
-        type: 'ROOM_ERROR',
+        type: ROOM_ERROR,
         payload: err.response.data.error,
       });
     }
@@ -211,12 +221,12 @@ export const Provider = ({ children }) => {
       const res = await axios.post(`${server}/api/chats`, chat, config);
 
       dispatch({
-        type: 'ADD_CHAT',
+        type: ADD_CHAT,
         payload: res.data.data,
       });
     } catch (err) {
       dispatch({
-        type: 'CHAT_ERROR',
+        type: CHAT_ERROR,
         payload: err.response.data.error,
       });
     }
@@ -235,8 +245,8 @@ export const Provider = ({ children }) => {
         setUser,
         token,
         setToken,
-        activeRoom,
-        changeActiveRoom,
+        room,
+        changeRoom,
         newChat,
         newUser,
         joinRoom,

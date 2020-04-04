@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-
-// import Paper from '@material-ui/core/Paper';
 import { Context } from '../../state/globalState';
 // import ChatBar from './ChatBar';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 
 const ChatBox = () => {
-  const { chats, activeRoom, sendChatAction, getChats, user, token, getUsers } =
-    useContext(Context) || {};
+  const {
+    chats,
+    room,
+    sendChatAction,
+    getChats,
+    user,
+    token,
+    getUsers,
+  } = useContext(Context);
   const [message, setMessage] = useState([]);
   const [navigate] = useState(false);
 
@@ -23,13 +28,13 @@ const ChatBox = () => {
   const handleSubmit = () => {
     sendChatAction({
       author: user,
-      message: message,
-      room: activeRoom || 'General',
+      chats: chats,
+      room: room || 'Public',
     });
     setMessage('');
   };
 
-  const handleContent = log => {
+  const handleContent = (log) => {
     if (log.keyCode === 13) {
       handleSubmit();
     }
@@ -44,9 +49,9 @@ const ChatBox = () => {
     <Fragment>
       <div className='chat-box'>
         {chats
-          .filter(chat => chat.room === activeRoom)
-          .map(chat => (
-            <div key={chat._id} className='message-list-container'>
+          .filter((chat) => chat.room === room)
+          .map((chat) => (
+            <div key={chat._id}>
               <Typography className='inline' key='message' variant='body1'>
                 {chat.message}
               </Typography>
@@ -58,8 +63,8 @@ const ChatBox = () => {
             id='inputMessage'
             name='message'
             value={message}
-            onKeyUp={e => handleContent(e)}
-            onChange={e => setMessage(e.target.value)}
+            onKeyUp={(e) => handleContent(e)}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder='Type a message'
           ></Input>
           <div>
