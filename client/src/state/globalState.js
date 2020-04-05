@@ -241,22 +241,6 @@ export const Provider = ({ children }) => {
         users: state.users,
         logs: state.logs,
         loading: state.loading,
-        user,
-        setUser,
-        token,
-        setToken,
-        room,
-        changeRoom,
-        newChat,
-        newUser,
-        joinRoom,
-        userLeaveRoom,
-        userLeft,
-        addChat,
-        getUsers,
-        getChats,
-        getRooms,
-        getEvents,
       }}
     >
       {children}

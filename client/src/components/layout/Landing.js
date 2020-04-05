@@ -9,19 +9,12 @@ const Landing = ({ isAuthenticated }) => {
   }
 
   return (
-    <section className='landing'>
-      <div className='dark-overlay'>
-        <div className='landing-inner'>
-          <h1 className='x-large'>MERN Chat App</h1>
-          <p className='lead'>Connect Developers Together</p>
-          <div className='buttons'>
-            <Link to='/register' className='btn btn-primary'>
-              Sign Up
-            </Link>
-            <Link to='/login' className='btn btn-light'>
-              Login
-            </Link>
-          </div>
+    <section>
+      <div>
+        <h1>MERN Chat App</h1>
+        <div>
+          <Link to='/register'>Sign Up</Link>
+          <Link to='/login'>Login</Link>
         </div>
       </div>
     </section>
@@ -32,7 +25,7 @@ Landing.propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
