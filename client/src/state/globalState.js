@@ -1,10 +1,11 @@
-import React, { createContext, useReducer, useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 import socketIOClient from 'socket.io-client';
 import combineReducers from '../reducers/index';
+import { addChat, addLog } from '../actions/chats';
 
 const init = {
   chats: [],
-  users: [],
+  user: [],
   rooms: [],
   logs: [],
   error: null,
@@ -35,10 +36,7 @@ const userLeft = (user) => {
 };
 
 export const Provider = ({ children }) => {
-  const [state, dispatch] = useReducer(combineReducers, init);
-  const [room, changeRoom] = useState('Public');
-  const [user, setUser] = useState('');
-  const [token, setToken] = useState('');
+  const [state] = useReducer(combineReducers, init);
   const server = 'http://localhost:5000';
 
   // Initialize socket client
@@ -104,7 +102,7 @@ export const Provider = ({ children }) => {
         chats: state.chats,
         rooms: state.rooms,
         error: state.error,
-        users: state.users,
+        user: state.user,
         logs: state.logs,
         loading: state.loading,
       }}

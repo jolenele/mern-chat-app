@@ -5,31 +5,25 @@ import { Context } from '../../state/globalState';
 // import ChatBar from './ChatBar';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+import { getChats, getUser } from '../../actions/chats';
 
 const ChatBox = () => {
-  const {
-    chats,
-    room,
-    sendChatAction,
-    getChats,
-    user,
-    token,
-    getUsers,
-  } = useContext(Context);
+  const { chats, rooms, user, newChat } = useContext(Context);
   const [message, setMessage] = useState([]);
   const [navigate] = useState(false);
+  const [token] = useState('');
 
   useEffect(() => {
     console.log('chats ', chats);
     getChats(token);
-    getUsers(token);
+    getUser(token);
   }, []);
 
   const handleSubmit = () => {
-    sendChatAction({
+    newChat({
       author: user,
       chats: chats,
-      room: room || 'Public',
+      rooms: rooms || 'Public',
     });
     setMessage('');
   };
@@ -49,7 +43,7 @@ const ChatBox = () => {
     <Fragment>
       <div className='chat-box'>
         {chats
-          .filter((chat) => chat.room === room)
+          .filter((chat) => chat.rooms === rooms)
           .map((chat) => (
             <div key={chat._id}>
               <Typography className='inline' key='message' variant='body1'>
@@ -86,27 +80,3 @@ const ChatBox = () => {
 };
 
 export default ChatBox;
-
-// <div id='chatBox'>
-//       <Paper id='chat' elevation={3}>
-//         {chats.map((msg, index) => {
-//           return (
-//             <div key={index}>
-//               <Typography variant='subtitle2' align='left'>
-//                 {msg.username}
-//               </Typography>
-//               <Typography variant='body1' align='left'>
-//                 {msg.content}
-//               </Typography>
-//             </div>
-//           );
-//         })}
-//       </Paper>
-
-//       <ChatBar
-//         content={this.state.content}
-//         handleContent={this.handleContent.bind(this)}
-//         handleSubmit={this.handleSubmit.bind(this)}
-//         username={this.state.username}
-//       />
-//     </div>

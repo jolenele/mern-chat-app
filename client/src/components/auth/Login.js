@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import TextField from '@material-ui/core/TextField';
-import { Button } from 'semantic-ui-react';
+import { Button } from '@material-ui/core';
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -71,26 +71,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { login })(Login);
-// <form className='form' onSubmit={e => onSubmit(e)}>
-//         <div className='form-group'>
-//           <input
-//             type='email'
-//             placeholder='Email Address'
-//             name='email'
-//             value={email}
-//             onChange={e => onChange(e)}
-//             required
-//           />
-//         </div>
-//         <div className='form-group'>
-//           <input
-//             type='password'
-//             placeholder='Password'
-//             name='password'
-//             value={password}
-//             onChange={e => onChange(e)}
-//             minLength='6'
-//           />
-//         </div>
-//         <input type='submit' className='btn btn-primary' value='Login' />
-//       </form>

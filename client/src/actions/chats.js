@@ -1,19 +1,20 @@
 import axios from 'axios';
-import { setAlert } from './alert';
 import {
   GET_CHATS,
   GET_ROOMS,
-  GET_USERS,
   ADD_CHAT,
   GET_LOGS,
   ROOM_ERROR,
   LOG_ERROR,
   CHAT_ERROR,
+  GET_USERS,
   AUTH_ERROR,
-} from '../actions/types';
+} from './types';
+
+const server = 'http://localhost:5000';
 
 // Add logs
-const addLog = async (log, token) => {
+export const addLog = async (log, token) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +28,7 @@ const addLog = async (log, token) => {
   }
 };
 
-const getChats = async (token) => {
+export const getChats = async (token) => async (dispatch) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -48,28 +49,7 @@ const getChats = async (token) => {
   }
 };
 
-const getUsers = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  try {
-    const res = await axios.get(`${server}/api/getuser`, config);
-
-    dispatch({
-      type: GET_USERS,
-      payload: res.data.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: AUTH_ERROR,
-      payload: err.response.data.error,
-    });
-  }
-};
-
-const getEvents = async (token) => {
+export const getLogs = async (token) => async (dispatch) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -90,7 +70,7 @@ const getEvents = async (token) => {
   }
 };
 
-const getRooms = async (token) => {
+export const getRooms = async (token) => async (dispatch) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -111,7 +91,7 @@ const getRooms = async (token) => {
   }
 };
 
-const addChat = async (chat, token) => {
+export const addChat = async (chat, token) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -128,6 +108,27 @@ const addChat = async (chat, token) => {
   } catch (err) {
     dispatch({
       type: CHAT_ERROR,
+      payload: err.response.data.error,
+    });
+  }
+};
+
+export const getUser = async (token) => async (dispatch) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    const res = await axios.get(`${server}/api/getuser`, config);
+
+    dispatch({
+      type: GET_USERS,
+      payload: res.data.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
       payload: err.response.data.error,
     });
   }
