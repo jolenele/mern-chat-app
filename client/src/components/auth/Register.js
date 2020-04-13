@@ -35,7 +35,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 
   return (
     <Fragment>
-      <h1>Sign Up</h1>
+      <h1>Register</h1>
       <TextField
         variant='outlined'
         margin='normal'

@@ -2,24 +2,23 @@ const app = require('express');
 const router = app.Router();
 const Log = require('../model/Log');
 
-router.route('/:id').get((req, res) => {
-  Log.findById(req.params.id, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/:id', async (req, res) => {
+  try {
+    const log = await Log.findById(req.log.id);
+    res.json(log);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
-router.route('/').get((req, res) => {
-  Log.find((error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/', async (req, res) => {
+  try {
+    const log = await Log.find(req);
+    res.json(log);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
-
 module.exports = router;

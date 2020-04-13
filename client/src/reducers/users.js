@@ -1,56 +1,32 @@
-import {
-  REGISTER_SUCCESS,
-  USER_LOADED,
-  LOGIN_SUCCESS,
-  LOGOUT,
-  ACCOUNT_DELETED,
-} from '../actions/types';
+import { GET_USER, GET_USERS, USER_ERROR } from '../actions/types';
 
 const initialState = {
-  token: localStorage.getItem('token'),
-  isAuthenticated: null,
-  loading: true,
   user: null,
+  users: [],
+  loading: true,
+  error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case USER_LOADED:
+    case GET_USER:
       return {
         ...state,
-        isAuthenticated: true,
-        loading: false,
         user: payload,
-      };
-    case REGISTER_SUCCESS:
-      return {
-        ...state,
-        ...payload,
-        isAuthenticated: true,
         loading: false,
       };
-    case LOGIN_SUCCESS:
+    case GET_USERS:
       return {
         ...state,
-        ...payload,
-        isAuthenticated: true,
+        users: payload,
         loading: false,
       };
-    case ACCOUNT_DELETED:
+    case USER_ERROR:
       return {
         ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-        user: null,
-      };
-    case LOGOUT:
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
+        error: payload,
         loading: false,
         user: null,
       };

@@ -4,14 +4,11 @@ const { check, validationResult } = require('express-validator');
 const User = require('../model/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 
 router.post(
   '/',
   [
-    check('username', 'Name is required')
-      .not()
-      .isEmpty(),
+    check('username', 'Name is required').not().isEmpty(),
     check('email', 'Please enter a valid email').isEmail(),
     check(
       'password',

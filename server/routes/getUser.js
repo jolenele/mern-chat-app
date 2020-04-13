@@ -2,24 +2,24 @@ const app = require('express');
 const router = app.Router();
 const User = require('../model/User');
 
-router.route('/:id').get((req, res) => {
-  User.findById(req.params.id, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
-router.route('/').get((req, res) => {
-  User.find((error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/', async (req, res) => {
+  try {
+    const user = await User.find(req);
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;

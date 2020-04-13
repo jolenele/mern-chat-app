@@ -20,7 +20,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // Routes
-// app.get('/', (req, res) => res.send('API is runnning...'));
+app.get('/', (req, res) => res.send('API is runnning...'));
 app.use('/api/users', require('./routes/users')); // register new users
 app.use('/api/getUser', require('./routes/getUser')); // retrieve users
 app.use('/api/auth', require('./routes/auth'));
@@ -38,25 +38,25 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   socket.username = 'Anonymous';
   socket.join('public');
   console.log('Socket connected');
   console.log('New user connected');
 
   // New Message
-  socket.on('new_message', msg => {
+  socket.on('new_message', (msg) => {
     io.in(msg.room).emit('new_message', msg);
   });
 
   // New user join in
-  socket.on('new_user', user => {
+  socket.on('new_user', (user) => {
     io.emit('new_user', user);
     console.log('User ', JSON.stringify(user), ' has joined in');
   });
 
   // Join Room
-  socket.on('join_room', joinRoom => {
+  socket.on('join_room', (joinRoom) => {
     const { room } = joinRoom;
     socket.join(joinRoom.room);
     io.in(room).emit('join_room', joinRoom);
@@ -64,7 +64,7 @@ io.on('connection', socket => {
   });
 
   // Leave Room
-  socket.on('leave_room', leaveRoom => {
+  socket.on('leave_room', (leaveRoom) => {
     const { room } = leaveRoom;
     socket.leave(leaveRoom.room);
     io.in(room).emit('leave_room', leaveRoom);
@@ -72,7 +72,7 @@ io.on('connection', socket => {
   });
 
   // User left
-  socket.on('user_left', user => {
+  socket.on('user_left', (user) => {
     io.emit('user_left', user);
   });
 

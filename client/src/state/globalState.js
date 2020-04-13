@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 import combineReducers from '../reducers/index';
 import { addChat, addLog } from '../actions/chats';
@@ -10,6 +10,8 @@ const init = {
   logs: [],
   error: null,
   loading: true,
+  email: [],
+  password: [],
 };
 
 export const Context = createContext();
@@ -37,13 +39,13 @@ const userLeft = (user) => {
 
 export const Provider = ({ children }) => {
   const [state] = useReducer(combineReducers, init);
+  const [token] = useState('');
   const server = 'http://localhost:5000';
 
   // Initialize socket client
   if (!socket) {
     socket = socketIOClient.connect(server);
     socket.on('new_message', (msg) => {
-      const token = localStorage.getItem('token');
       addChat(msg, token);
     });
 
@@ -79,7 +81,6 @@ export const Provider = ({ children }) => {
           user: user,
           source: room,
         };
-        const token = localStorage.getItem('token');
         addLog(log, token);
       }
     });
@@ -90,7 +91,6 @@ export const Provider = ({ children }) => {
         user: leftUser,
         source: 'Main Page',
       };
-      const token = localStorage.getItem('token');
       addLog(event, token);
       localStorage.removeItem('token');
     });
@@ -102,9 +102,10 @@ export const Provider = ({ children }) => {
         chats: state.chats,
         rooms: state.rooms,
         error: state.error,
-        user: state.user,
+        user: state.users,
         logs: state.logs,
         loading: state.loading,
+        token,
       }}
     >
       {children}

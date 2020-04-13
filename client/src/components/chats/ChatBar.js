@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import ChatIcon from '@material-ui/icons/Chat';
 import FaceIcon from '@material-ui/icons/Face';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     bottom: 0,
     top: 'auto',

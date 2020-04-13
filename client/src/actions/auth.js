@@ -9,11 +9,12 @@ import {
   LOGIN_FAIL,
   LOGOUT,
 } from './types';
+const server = 'http://localhost:5000';
 
 // Load User
-export const loadUser = () => async dispatch => {
+export const loadUser = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/auth');
+    const res = await axios.get(`${server}/api/auth`);
 
     dispatch({
       type: USER_LOADED,
@@ -27,7 +28,7 @@ export const loadUser = () => async dispatch => {
 };
 
 // Register User
-export const register = ({ username, email, password }) => async dispatch => {
+export const register = ({ username, email, password }) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ export const register = ({ username, email, password }) => async dispatch => {
   const body = JSON.stringify({ username, email, password });
 
   try {
-    const res = await axios.post('/api/users', body, config);
+    const res = await axios.post(`${server}/api/users`, body, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
@@ -47,7 +48,7 @@ export const register = ({ username, email, password }) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
 
     dispatch({
@@ -57,7 +58,7 @@ export const register = ({ username, email, password }) => async dispatch => {
 };
 
 // Login User
-export const login = (email, password) => async dispatch => {
+export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ export const login = (email, password) => async dispatch => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post('/api/auth', body, config);
+    const res = await axios.post(`${server}/api/auth`, body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -79,7 +80,7 @@ export const login = (email, password) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
 
     dispatch({
@@ -88,7 +89,7 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
-// Logout / Clear Profile
-export const logout = () => dispatch => {
+// Logout
+export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
 };

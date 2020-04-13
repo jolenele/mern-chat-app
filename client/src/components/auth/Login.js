@@ -1,11 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: '',
@@ -20,7 +19,12 @@ const Login = ({ login, isAuthenticated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(email, password);
+    console.log('login ', login);
+    console.log('button clicked');
   };
+
+  //token setUser
+  //return token from login to globalState
 
   if (isAuthenticated) {
     return <Redirect to='/chat' />;

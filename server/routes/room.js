@@ -2,24 +2,23 @@ const app = require('express');
 const router = app.Router();
 const Room = require('../model/Room');
 
-router.route('/:id').get((req, res) => {
-  Room.findById(req.params.id, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/:id', async (req, res) => {
+  try {
+    const room = await Room.findById(req.room.id);
+    res.json(room);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
-router.route('/').get((req, res) => {
-  Room.find((error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+router.get('/', async (req, res) => {
+  try {
+    const room = await Room.find(req);
+    res.json(log);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
-
 module.exports = router;

@@ -9,8 +9,8 @@ const Landing = ({ isAuthenticated }) => {
   }
 
   return (
-    <section>
-      <div>
+    <section className='landing'>
+      <div className='landing-inner'>
         <h1>MERN Chat App</h1>
         <div>
           <Link to='/register'>Sign Up</Link>
