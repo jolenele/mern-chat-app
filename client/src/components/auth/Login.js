@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
@@ -19,15 +19,10 @@ const Login = ({ login, isAuthenticated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     login(email, password);
-    console.log('login ', login);
-    console.log('button clicked');
   };
 
-  //token setUser
-  //return token from login to globalState
-
   if (isAuthenticated) {
-    return <Redirect to='/chat' />;
+    return <Redirect to='/chats' />;
   }
 
   return (
@@ -57,7 +52,7 @@ const Login = ({ login, isAuthenticated }) => {
         minLength='6'
         onChange={(e) => onChange(e)}
       />
-      <Button onSubmit={(e) => handleSubmit(e)}>Login</Button>
+      <Button onClick={(e) => handleSubmit(e)}>Login</Button>
       <p>
         Don't have an account? <Link to='/register'>Sign Up</Link>
       </p>

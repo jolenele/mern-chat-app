@@ -13,21 +13,10 @@ import store from './store';
 import { loadUser } from './actions/auth';
 import setAuthToken from './actions/setAuthToken';
 
-// let socket;
-// const sendMessage = msg => {
-//   socket.emit('new_message', msg);
-// };
-
-if (localStorage.token) {
-  setAuthToken(localStorage.token);
-}
-
 const App = () => {
   useEffect(() => {
-    if (localStorage.token) {
-      setAuthToken(localStorage.token);
-      store.dispatch(loadUser());
-    }
+    setAuthToken(localStorage.token);
+    store.dispatch(loadUser());
   }, []);
 
   return (

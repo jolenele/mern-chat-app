@@ -83,7 +83,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         value={passwordCheck}
         onChange={(e) => onChange(e)}
       />
-      <Button onSubmit={(e) => handleSubmit(e)}>Register</Button>
+      <Button onClick={(e) => handleSubmit(e)}>Register</Button>
       <p>
         Already have an account? <Link to='/login'>Sign In</Link>
       </p>

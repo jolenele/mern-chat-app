@@ -4,6 +4,7 @@ let express = require('express'),
   socketio = require('socket.io'),
   connectDB = require('./database/db'),
   dotenv = require('dotenv');
+cors = require('cors');
 
 dotenv.config();
 
@@ -18,15 +19,18 @@ connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
+app.use(cors());
 
-// Routes
-app.get('/', (req, res) => res.send('API is runnning...'));
-app.use('/api/users', require('./routes/users')); // register new users
-app.use('/api/getUser', require('./routes/getUser')); // retrieve users
-app.use('/api/auth', require('./routes/auth'));
+// @Accessibility: Public
+app.use('/register', require('./routes/register')); // register new users
+app.use('/auth', require('./routes/auth'));
+// @Acessibility: Private
+app.use('/api', require('./middleware/auth'));
+app.use('/api/user', require('./routes/user')); // retrieve users
 app.use('/api/chats', require('./routes/chats'));
 app.use('/api/log', require('./routes/log'));
 app.use('/api/room', require('./routes/room'));
+app.use('/api/guest', require('./routes/guest'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

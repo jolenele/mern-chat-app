@@ -22,7 +22,7 @@ export const addLog = async (log, token) => {
     },
   };
   try {
-    await axios.post(`${server}/api/eventlog`, log, config);
+    await axios.post(`${server}/api/log`, log, config);
   } catch (err) {
     console.log(err.response.data.error);
   }
@@ -120,7 +120,7 @@ export const getUser = async (token) => async (dispatch) => {
     },
   };
   try {
-    const res = await axios.get(`${server}/api/getuser`, config);
+    const res = await axios.get(`${server}/api/user`, config);
 
     dispatch({
       type: GET_USERS,

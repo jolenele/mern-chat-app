@@ -8,13 +8,17 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  GET_USER,
+  GET_USERS,
+  USER_ERROR,
+  CLEAR_USER,
 } from './types';
 const server = 'http://localhost:5000';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
   try {
-    const res = await axios.get(`${server}/api/auth`);
+    const res = await axios.get(`${server}/auth`);
 
     dispatch({
       type: USER_LOADED,
@@ -27,6 +31,41 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
+// Get user by ID
+export const getUserById = (userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${server}/api/user/${userId}`);
+
+    dispatch({
+      type: GET_USER,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: USER_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get all users
+export const getUsers = () => async (dispatch) => {
+  dispatch({ type: CLEAR_USER });
+  try {
+    const res = await axios.get(`${server}/api/user`);
+
+    dispatch({
+      type: GET_USERS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: USER_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
 // Register User
 export const register = ({ username, email, password }) => async (dispatch) => {
   const config = {
@@ -34,12 +73,10 @@ export const register = ({ username, email, password }) => async (dispatch) => {
       'Content-Type': 'application/json',
     },
   };
-
   const body = JSON.stringify({ username, email, password });
 
   try {
-    const res = await axios.post(`${server}/api/users`, body, config);
-
+    const res = await axios.post(`${server}/register`, body, config);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
@@ -68,13 +105,14 @@ export const login = (email, password) => async (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   try {
-    const res = await axios.post(`${server}/api/auth`, body, config);
+    const res = await axios.post(`${server}/auth`, body, config);
 
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
 
+    // const token = res.data.token;
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;

@@ -1,12 +1,22 @@
 const config = require('config');
+const jwt = require('jsonwebtoken');
 
-module.exports = function(req, res, next) {
-  const token = req.header('x-auth-token');
-  if (!token) {
-    return res.status(401).json({ msg: 'No token, authorization denied' });
+module.exports = function (req, res, next) {
+  // Get raw authorization header
+  const bearer = req.headers.authorization;
+
+  if (!bearer || !bearer.startsWith('Bearer ')) {
+    return res.status(401).json({
+      success: false,
+      message: 'No token provided',
+    });
   }
 
+  // split token from the Authorization header
+  const token = bearer.split('Bearer ')[1].trim();
+
   // Verify token
+  let payload;
   try {
     let privatekey = 'secrettoken';
     jwt.verify(token, privatekey, (error, decoded) => {
@@ -18,7 +28,7 @@ module.exports = function(req, res, next) {
       }
     });
   } catch (err) {
-    console.error('something wrong with auth middleware');
+    console.log(err);
     res.status(500).json({ msg: 'Server Error' });
   }
 };

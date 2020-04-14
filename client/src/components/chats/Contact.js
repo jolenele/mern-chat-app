@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUsers } from '../../actions/users';
+import { getUsers } from '../../actions/auth';
 import Spinner from '../layout/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';

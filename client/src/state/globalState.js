@@ -1,9 +1,21 @@
 import React, { createContext, useReducer, useState } from 'react';
 import socketIOClient from 'socket.io-client';
-import combineReducers from '../reducers/index';
-import { addChat, addLog } from '../actions/chats';
+import uuid from 'uuid';
+// import combineReducers from '../reducers/index';
+import reducers from '../reducers/reducers';
+import chats from '../reducers/chats';
+import axios from 'axios';
+import {
+  GET_CHATS,
+  GET_ROOMS,
+  ADD_CHAT,
+  GET_LOGS,
+  ROOM_ERROR,
+  LOG_ERROR,
+  CHAT_ERROR,
+} from '../actions/types';
 
-const init = {
+const initialState = {
   chats: [],
   user: [],
   rooms: [],
@@ -38,8 +50,10 @@ const userLeft = (user) => {
 };
 
 export const Provider = ({ children }) => {
-  const [state] = useReducer(combineReducers, init);
-  const [token] = useState('');
+  const [state, dispatch] = useReducer(reducers, initialState);
+  const [room, setRoom] = useState('');
+  const [user, setUser] = useState('');
+  const [token, setToken] = useState('');
   const server = 'http://localhost:5000';
 
   // Initialize socket client
@@ -95,17 +109,136 @@ export const Provider = ({ children }) => {
       localStorage.removeItem('token');
     });
   }
+  // Add logs
+  const addLog = async (log, token) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      await axios.post(`${server}/api/log`, log, config);
+    } catch (err) {
+      console.log(err.response.data.error);
+    }
+  };
+
+  const getChats = async (token) => async (dispatch) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await axios.get(`${server}/api/chats`, config);
+
+      dispatch({
+        type: GET_CHATS,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: CHAT_ERROR,
+        payload: err.response.data.error,
+      });
+    }
+  };
+
+  const getLogs = async (token) => async (dispatch) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await axios.get(`${server}/api/log`, config);
+
+      dispatch({
+        type: GET_LOGS,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: LOG_ERROR,
+        payload: err.response.data.error,
+      });
+    }
+  };
+
+  const getRooms = async (token) => async (dispatch) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await axios.get(`${server}/api/room`, config);
+
+      dispatch({
+        type: GET_ROOMS,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: ROOM_ERROR,
+        payload: err.response.data.error,
+      });
+    }
+  };
+
+  const addChat = async (chat, token) => async (dispatch) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const res = await axios.post(`${server}/api/chats`, chat, config);
+
+      dispatch({
+        type: ADD_CHAT,
+        payload: res.data.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: CHAT_ERROR,
+        payload: err.response.data.error,
+      });
+    }
+  };
 
   return (
     <Context.Provider
       value={{
+        ...state,
+        // init
         chats: state.chats,
         rooms: state.rooms,
         error: state.error,
         user: state.users,
         logs: state.logs,
         loading: state.loading,
+        // User
+        room,
+        setRoom,
+        user,
+        setUser,
         token,
+        setToken,
+        // Chats Actions
+        getChats,
+        getLogs,
+        getRooms,
+        addChat,
+        addLog,
+        // Socket
+        newChat,
+        newUser,
+        joinRoom,
+        userLeaveRoom,
+        userLeft,
       }}
     >
       {children}

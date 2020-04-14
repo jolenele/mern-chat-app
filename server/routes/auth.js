@@ -3,7 +3,6 @@ const router = app.Router();
 const auth = require('../middleware/auth');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../model/User');
@@ -18,6 +17,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// Login
 router.post(
   '/',
   [
@@ -52,14 +52,19 @@ router.post(
       const payload = {
         user: {
           id: user.id,
+          username: user.username,
         },
       };
 
       let privatekey = 'secrettoken';
 
-      jwt.sign(payload, privatekey, { expiresIn: 360000 }, (err, token) => {
+      jwt.sign(payload, privatekey, { expiresIn: '1h' }, (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({
+          token: token,
+          expiresIn: '1h',
+          username: user.username,
+        });
       });
 
       // res.json({ token });

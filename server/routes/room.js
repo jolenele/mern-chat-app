@@ -1,24 +1,16 @@
 const app = require('express');
 const router = app.Router();
 const Room = require('../model/Room');
+const controllers = require('../controller/crud.controllers');
 
-router.get('/:id', async (req, res) => {
-  try {
-    const room = await Room.findById(req.room.id);
-    res.json(room);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+// /api/room
+router.route('/').get(controllers.getAll(Room)).post(controllers.addItem(Room));
 
-router.get('/', async (req, res) => {
-  try {
-    const room = await Room.find(req);
-    res.json(log);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+// /api/room/:id
+router
+  .route('/:id')
+  .get(controllers.getOne(Room))
+  .put(controllers.updateItem(Room))
+  .delete(controllers.removeItem(Room));
+
 module.exports = router;

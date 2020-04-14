@@ -1,15 +1,23 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let messageSchema = new Schema(
-  {
-    content: String,
-    username: String,
-    room: String,
+let messageSchema = new Schema({
+  content: {
+    type: String,
+    required: [true, 'message sender is required'],
   },
-  {
-    timestamps: true,
-  }
-);
+  sender: {
+    type: String,
+    required: [true, 'message sender is required'],
+  },
+  room: {
+    type: String,
+    required: [true, 'message room is required'],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 module.exports = mongoose.model('Message', messageSchema);

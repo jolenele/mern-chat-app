@@ -1,11 +1,10 @@
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import rootReducer from './reducers/chats';
+import rootReducer from './reducers';
 import setAuthToken from './actions/setAuthToken';
 
-// prevent auth error on first run of subscription
-const initialState = { auth: { token: null } };
+const initialState = {};
 
 const middleware = [thunk];
 
@@ -18,7 +17,10 @@ const store = createStore(
 // set up a store subscription listener
 // to store the users token in localStorage
 
-let currentState = { ...initialState };
+// prevent auth error on first run of subscription
+let currentState = {
+  auth: { token: null, isAuthenticated: null, loading: true, user: null },
+};
 
 store.subscribe(() => {
   // keep track of the previous and current state to compare changes

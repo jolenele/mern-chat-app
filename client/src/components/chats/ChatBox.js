@@ -1,14 +1,23 @@
-import React, { useState, useEffect, useReducer, Fragment } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatBar from './ChatBar';
 import Contact from './Contact';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import { getChats, getUser, addChat, addLog } from '../../actions/chats';
 import socketIOClient from 'socket.io-client';
-import combineReducers from '../../reducers/index';
-// Socket
+import store from '../../store';
+import { loadUser } from '../../actions/auth';
+import setAuthToken from '../../actions/setAuthToken';
+import {
+  addChat,
+  addLog,
+  getChats,
+  getLogs,
+  getUser,
+  getRooms,
+} from '../../actions/chats';
+// import combineReducers from '../../reducers/index';
 let socket;
 const newChat = (msg) => {
   socket.emit('new_message', msg);
@@ -30,49 +39,46 @@ const userLeft = (user) => {
   socket.emit('user_left', user);
 };
 
-const ChatBox = () => {
-  const init = {
-    chats: [],
-    users: [],
-    rooms: [],
-    logs: [],
-    error: null,
-    loading: true,
-  };
+const server = 'http://localhost:5000';
 
-  const [user, setUser] = useState('');
-  const [rooms, changeRoom] = useState('');
-  const [chats, setMessage] = useState([]);
-  const [state, dispatch] = useReducer(combineReducers, init);
-  const [logs, getLog] = useState('');
-  const [token, setToken] = useState('');
-  const [navigate] = useState(false);
-  const server = 'https://localhost:3000';
-
+const ChatBox = (getChats, getRooms, getLogs, getUser) => {
   useEffect(() => {
     getChats();
+    getRooms();
+    getLogs();
     getUser();
-  }, []);
+  }, [getChats]);
+
+  const token = localStorage.getItem('token');
+
+  console.log('chats ne: ' + chats);
+
+  const [message, setMessage] = useState({
+    content: '',
+    sender: '',
+  });
 
   const handleSubmit = () => {
     newChat({
-      author: user,
-      chats: chats,
-      rooms: rooms,
+      content: message,
+      sender: user,
+      room: room,
     });
     setMessage('');
   };
 
-  const handleContent = (log) => {
+  const handleTextChange = (log) => {
     handleSubmit();
-    // log.preventDefault();
+    log.preventDefault();
   };
 
-  if (navigate) {
-    return <Redirect to='/' push={true} />;
-  }
+  const handleLogout = () => {
+    userLeft(user);
+    return <Redirect to='/chats' />;
+  };
 
-  // Initialize socket client
+  // Socket
+
   if (!socket) {
     socket = socketIOClient.connect(server);
     socket.on('new_message', (msg) => {
@@ -125,14 +131,12 @@ const ChatBox = () => {
       localStorage.removeItem('token');
     });
   }
-  // let chats = this.state.chats;
-  // let rooms = this.state.rooms;
   return (
     <Fragment>
       <Contact />
       <div className='chat-box'>
-        {chats
-          .filter((chat) => chat.rooms === rooms)
+        {[...chats]
+          .filter((chat) => chat.room === room)
           .map((chat) => (
             <div key={chat._id}>
               <Typography className='inline' key='message' variant='body1'>
@@ -142,7 +146,7 @@ const ChatBox = () => {
           ))}
         <ChatBar
           content={chats}
-          handleContent={handleContent()}
+          handleContent={handleTextChange()}
           handleSubmit={() => {
             handleSubmit();
           }}
