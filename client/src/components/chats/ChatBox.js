@@ -183,6 +183,7 @@ const ChatBox = () => {
   }
   return (
     <Fragment>
+      <Contact />
       <div className='chat-box'>
         {chats.map((chat) => (
           <div key={chat._id}>
