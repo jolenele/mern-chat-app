@@ -74,11 +74,4 @@ const UsersList = () => {
   );
 };
 
-UsersList.propTypes = {
-  setUsers: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-};
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-export default connect(mapStateToProps, { setUsers })(UsersList);
+export default UsersList

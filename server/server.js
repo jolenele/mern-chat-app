@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
 
   // New Message
   socket.on('new_message', (msg) => {
-    io.in(msg.room).emit('new_message', msg);
+    io.emit('new_message', msg);
   });
 
   // New user join in

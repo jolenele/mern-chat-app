@@ -93,6 +93,8 @@ const ChatBox = () => {
   const [chats, setChats] = useState([]);
   const [user, setUser] = useState('');
   const [room, setRoom] = useState([]);
+  const [sender, setSender] = useState('');
+  const [fromRoom, setFromRoom] = useState('General');
   const [message, setMessage] = useState('');
   const token = localStorage.getItem('token');
   useEffect(async () => {
@@ -102,17 +104,26 @@ const ChatBox = () => {
     setRoom(roomRes);
     const userRes = await getUsers(token);
     setUser(userRes);
+    const username = localStorage.getItem('username')
+    setSender(username)
   }, [getChats]);
 
 
   const handleSendMessage = () => {
-    newChat({
+    const nChat = {
       content: message,
-      sender: user,
-      room: room,
-    });
-    let updateChats = [...chats].append(newChat)
-    set
+      sender: sender,
+      room: fromRoom
+    }
+    newChat(nChat);
+    let updateChats = [...chats, nChat]
+    // Save to db
+    socket.on('new_message', function(msg){
+      const token = localStorage.getItem('token')
+      console.log(msg)
+      addChat(msg, token)
+    })
+    setChats(updateChats)
     setMessage('');
   };
 
@@ -205,9 +216,10 @@ const ChatBox = () => {
             <ChatIcon />
           </div>
           <Input
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyUp={(e) => handleKeypress(e)}
+            onChange={e => setMessage(e.target.value)}
+            onKeyUp={e => handleKeypress(e)}
             type='text'
+            name="message"
             value={message}
             placeholder='Type your message...'
             classes={{
