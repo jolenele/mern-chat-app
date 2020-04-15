@@ -95,7 +95,7 @@ export const register = ({ username, email, password }) => async (dispatch) => {
 };
 
 // Login User
-export const login = (email, password) => async (dispatch) => {
+export const login = async (email, password) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -103,27 +103,10 @@ export const login = (email, password) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post(`${server}/auth`, { email, password }, config);
-
+    const res = await axios.post(`${server}/auth`, {email, password}, config)
     localStorage.setItem('token', res.data.token)
-
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data,
-    });
-
-    // const token = res.data.token;
-    dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-    }
-
-    dispatch({
-      type: LOGIN_FAIL,
-    });
+    console.log(err)
   }
 };
 

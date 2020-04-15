@@ -1,16 +1,20 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
+import axios from 'axios';
+
 const Login = ({ login, isAuthenticated }) => {
+  const history = useHistory()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
+  const SERVER = "http://localhost:5000"
   const { email, password } = formData;
 
   const onChange = (e) =>
@@ -18,12 +22,17 @@ const Login = ({ login, isAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(email, password);
+    axios.post(`${SERVER}/auth`, {
+      email,
+      password
+    }).then(res => {
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('username', res.data.username)
+      history.push('/chats')
+    }).catch(err => {
+      console.log(err)
+    })
   };
-
-  if (isAuthenticated) {
-    return <Redirect to='/chats' />;
-  }
 
   return (
     <Fragment>

@@ -99,7 +99,6 @@ const ChatBox = () => {
   const token = localStorage.getItem('token');
   useEffect(async () => {
     const chatRes = await getChats(token);
-    console.log(chatRes)
     setChats(chatRes);
     const roomRes = await getRooms(token);
     setRoom(roomRes);
@@ -107,9 +106,7 @@ const ChatBox = () => {
     setUser(userRes)
   }, [getChats]);
 
-  
 
-  console.log('chats ne: ' + chats);
 
   const handleSendMessage = () => {
     newChat({
@@ -117,6 +114,8 @@ const ChatBox = () => {
       sender: user,
       room: room,
     });
+    let updateChats = [...chats].append(newChat)
+    set
     setMessage('');
   };
 
