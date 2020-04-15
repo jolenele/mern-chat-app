@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUsers } from '../../actions/auth';
+import { getUsers } from './ActionHelper';
 import Spinner from '../layout/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -17,14 +17,15 @@ const useStyles = makeStyles({
     minWidth: 650,
   },
 });
-const fetchChats = () => {};
 const Contact = () => {
   const [users, setUsers] = useState([])
   const token = localStorage.getItem('token')
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    getUsers(token);
+  useEffect(async () => {
+    const resUser = await getUsers(token);
+    console.log(resUser)
+    setUsers(resUser)
   }, []);
   const classes = useStyles();
   return (
@@ -44,7 +45,7 @@ const Contact = () => {
               <TableBody>
                 {users.length > 0 ? (
                   users.map((user) => (
-                    <TableRow key={user._id} onClick={this.fetchChats()}>
+                    <TableRow key={user._id}>
                       <TableCell component='th' scope='row'>
                         {user.username}
                       </TableCell>

@@ -12,13 +12,15 @@ import ChatIcon from '@material-ui/icons/Chat';
 import FaceIcon from '@material-ui/icons/Face';
 import { loadUser } from '../../actions/auth';
 import setAuthToken from '../../actions/setAuthToken';
+import Chip from '@material-ui/core/Chip';
 import {
   addChat,
   addLog,
   getChats,
   getLogs,
+  getUsers,
   getRooms,
-} from '../../actions/chats';
+} from './ActionHelper';
 // import combineReducers from '../../reducers/index';
 
 const useStyles = makeStyles((theme) => ({
@@ -93,10 +95,14 @@ const ChatBox = () => {
   const [room, setRoom] = useState([]);
   const [message, setMessage] = useState('');
   const token = localStorage.getItem('token');
-  useEffect(() => {
-    getChats(token);
-    getRooms(token);
-    loadUser();
+  useEffect(async () => {
+    const chatRes = await getChats(token);
+    console.log(chatRes);
+    setChats(chatRes);
+    const roomRes = await getRooms(token);
+    setRoom(roomRes);
+    const userRes = await getUsers(token);
+    setUser(userRes);
   }, [getChats]);
 
   console.log('chats ne: ' + chats);
@@ -180,15 +186,14 @@ const ChatBox = () => {
     <Fragment>
       <Contact />
       <div className='chat-box'>
-        {[...chats]
-          .filter((chat) => chat.room === room)
-          .map((chat) => (
-            <div key={chat._id}>
-              <Typography className='inline' key='message' variant='body1'>
-                {chat.message}
-              </Typography>
-            </div>
-          ))}
+        {chats.map((chat) => (
+          <div key={chat._id}>
+            <Typography className='inline' key='message' variant='body1'>
+              <Chip icon={<FaceIcon />} label={chat.sender} />
+              {chat.content}
+            </Typography>
+          </div>
+        ))}
       </div>
       {/* Chat Bar */}
       <div className='chat-bar'>
