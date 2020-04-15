@@ -35,10 +35,10 @@ const Navbar = ({ auth: { username, isAuthenticated, loading }, logout }) => {
         <Link to='/users'>Contacts</Link>
       </li>
       <li>
-        <Link to='/rooms'>Rooms List</Link>
+        <Link to='/rooms'>Rooms</Link>
       </li>
       <li>
-        <Link to='/logs'>Even Logs List</Link>
+        <Link to='/logs'>Even Logs</Link>
       </li>
     </ul>
   );

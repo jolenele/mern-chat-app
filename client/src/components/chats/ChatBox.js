@@ -108,7 +108,6 @@ const ChatBox = () => {
     setSender(username)
   }, [getChats]);
 
-
   const handleSendMessage = () => {
     const nChat = {
       content: message,
