@@ -13,7 +13,7 @@ import {
   USER_ERROR,
   CLEAR_USER,
 } from './types';
-const server = 'http://localhost:5000';
+const server = 'https://mern-chat-app-ngale.herokuapp.com';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -117,10 +117,10 @@ export const login = async (email, password) => {
   };
 
   try {
-    const res = await axios.post(`${server}/auth`, {email, password}, config)
-    localStorage.setItem('token', res.data.token)
+    const res = await axios.post(`${server}/auth`, { email, password }, config);
+    localStorage.setItem('token', res.data.token);
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 };
 

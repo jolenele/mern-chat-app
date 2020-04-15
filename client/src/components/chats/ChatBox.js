@@ -12,7 +12,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import { loadUser } from '../../actions/auth';
 import setAuthToken from '../../actions/setAuthToken';
 import Chip from '@material-ui/core/Chip';
-import Grid from "@material-ui/core/Grid";
+import Grid from '@material-ui/core/Grid';
 import {
   addChat,
   addLog,
@@ -84,7 +84,7 @@ const userLeft = (user) => {
   socket.emit('user_left', user);
 };
 
-const server = 'http://localhost:5000';
+const server = 'https://mern-chat-app-ngale.herokuapp.com';
 
 const ChatBox = () => {
   // Styling Declaration
@@ -104,25 +104,25 @@ const ChatBox = () => {
     setRoom(roomRes);
     const userRes = await getUsers(token);
     setUser(userRes);
-    const username = localStorage.getItem('username')
-    setSender(username)
+    const username = localStorage.getItem('username');
+    setSender(username);
   }, [getChats]);
 
   const handleSendMessage = () => {
     const nChat = {
       content: message,
       sender: sender,
-      room: fromRoom
-    }
+      room: fromRoom,
+    };
     newChat(nChat);
-    let updateChats = [...chats, nChat]
+    let updateChats = [...chats, nChat];
     // Save to db
-    socket.on('new_message', function(msg){
-      const token = localStorage.getItem('token')
-      console.log(msg)
-      addChat(msg, token)
-    })
-    setChats(updateChats)
+    socket.on('new_message', function (msg) {
+      const token = localStorage.getItem('token');
+      console.log(msg);
+      addChat(msg, token);
+    });
+    setChats(updateChats);
     setMessage('');
   };
 
@@ -194,62 +194,65 @@ const ChatBox = () => {
   }
   return (
     <Fragment>
-      <div className="contact">
+      <div className='contact'>
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <Contact />
           </Grid>
           <Grid item xs={9}>
-          <div className="chat">
-    <div className='chat-box'>
-        {chats.map((chat) => (
-          <div key={chat._id}>
-            <Typography className='inline' key='message' variant='body1'>
-              <Chip icon={<FaceIcon />} label={chat.sender} />
-              {chat.content}
-            </Typography>
-          </div>
-        ))}
-      </div>
-      {/* Chat Bar */}
-      <div className='chat-bar'>
-        <div
-          className={classes.inputContainer}
-          style={{ maxWidth: '200px' }}
-        ></div>
-        <div className={classes.inputContainer}>
-          <div className={classes.icon}>
-            <ChatIcon />
-          </div>
-          <Input
-            onChange={e => setMessage(e.target.value)}
-            onKeyUp={e => handleKeypress(e)}
-            type='text'
-            name="message"
-            value={message}
-            placeholder='Type your message...'
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          ></Input>
-          <Button
-            variant='contained'
-            id='sendButton'
-            color='primary'
-            onClick={() => {
-              handleSendMessage();
-            }}
-          >
-            Send
-          </Button>
-        </div>
-      </div>
-    </div>
+            <div className='chat'>
+              <div className='chat-box'>
+                {chats.map((chat) => (
+                  <div key={chat._id}>
+                    <Typography
+                      className='inline'
+                      key='message'
+                      variant='body1'
+                    >
+                      <Chip icon={<FaceIcon />} label={chat.sender} />
+                      {chat.content}
+                    </Typography>
+                  </div>
+                ))}
+              </div>
+              {/* Chat Bar */}
+              <div className='chat-bar'>
+                <div
+                  className={classes.inputContainer}
+                  style={{ maxWidth: '200px' }}
+                ></div>
+                <div className={classes.inputContainer}>
+                  <div className={classes.icon}>
+                    <ChatIcon />
+                  </div>
+                  <Input
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyUp={(e) => handleKeypress(e)}
+                    type='text'
+                    name='message'
+                    value={message}
+                    placeholder='Type your message...'
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                  ></Input>
+                  <Button
+                    variant='contained'
+                    id='sendButton'
+                    color='primary'
+                    onClick={() => {
+                      handleSendMessage();
+                    }}
+                  >
+                    Send
+                  </Button>
+                </div>
+              </div>
+            </div>
           </Grid>
         </Grid>
-    </div>
-      
+      </div>
     </Fragment>
   );
 };

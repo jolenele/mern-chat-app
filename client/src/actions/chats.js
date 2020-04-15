@@ -11,7 +11,7 @@ import {
   AUTH_ERROR,
 } from './types';
 
-const server = 'http://localhost:5000';
+const server = 'https://mern-chat-app-ngale.herokuapp.com';
 
 // Add logs
 export const addLog = async (log, token) => {
