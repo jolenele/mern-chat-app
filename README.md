@@ -27,6 +27,17 @@ password: admin123
 email: abc@gbc.ca
 password: abc123
 
+# Navigation
+
+'/' : Dashboard
+'/register' : Register
+'/login' : Login
+'/chats' : Chat Box for all users
+'/users; : Listing all users from admin side
+'/logs' : Show event logs from admin side
+'/rooms' : Show rooms from admin side
+'/logout' : For logout feature, in case navigation bar does not load the logout button
+
 # Project Report:
 
 1. What I have done/used:
