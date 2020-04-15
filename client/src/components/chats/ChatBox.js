@@ -104,15 +104,14 @@ const ChatBox = () => {
     setUser(userRes);
   }, [getChats]);
 
-
   const handleSendMessage = () => {
     newChat({
       content: message,
       sender: user,
       room: room,
     });
-    let updateChats = [...chats].append(newChat)
-    set
+    let updateChats = [...chats].append(newChat);
+
     setMessage('');
   };
 

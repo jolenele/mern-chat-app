@@ -22,6 +22,11 @@ const RoomList = ({ getRooms, room: { rooms, loading } }) => {
   useEffect(() => {
     getRooms();
   }, []);
+  // useEffect(async () => {
+  //   const resRoom = await getRooms(token);
+  //   console.log(resUser);
+  //   setRooms(resRoom);
+  // }, []);
   const classes = useStyles();
   return (
     <Fragment>
