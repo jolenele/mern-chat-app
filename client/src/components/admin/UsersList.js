@@ -44,7 +44,7 @@ const UsersList = () => {
                   <TableCell align='right'>_id</TableCell>
                   <TableCell align='right'>Email</TableCell>
                   <TableCell align='right'>Password</TableCell>
-                  <TableCell align='right'>Protein&nbsp;Created</TableCell>
+                  <TableCell align='right'>Time&nbsp;Created</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

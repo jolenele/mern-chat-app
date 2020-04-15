@@ -19,24 +19,24 @@ https://mern-chat-app-ngale.herokuapp.com/
 
 # Admin Login
 
-email: admin@gbc.ca
-password: admin123
+- email: admin@gbc.ca
+- password: admin123
 
 # Available user Login
 
-email: abc@gbc.ca
-password: abc123
+- email: abc@gbc.ca
+- password: abc123
 
 # Navigation
 
-'/' : Dashboard
-'/register' : Register
-'/login' : Login
-'/chats' : Chat Box for all users
-'/users; : Listing all users from admin side
-'/logs' : Show event logs from admin side
-'/rooms' : Show rooms from admin side
-'/logout' : For logout feature, in case navigation bar does not load the logout button
+1. '/' : Dashboard
+2. '/register' : Register
+3. '/login' : Login
+4. '/chats' : Chat Box for all users
+5. '/users; : Listing all users from admin side
+6. '/logs' : Show event logs from admin side
+7. '/rooms' : Show rooms from admin side
+8. '/logout' : For logout feature, in case navigation bar does not load the logout button
 
 # Project Report:
 
