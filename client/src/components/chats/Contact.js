@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUsers } from '../../actions/auth';
@@ -18,9 +18,13 @@ const useStyles = makeStyles({
   },
 });
 const fetchChats = () => {};
-const Contact = ({ getUsers, user: { users, loading } }) => {
+const Contact = () => {
+  const [users, setUsers] = useState([])
+  const token = localStorage.getItem('token')
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
-    getUsers();
+    getUsers(token);
   }, []);
   const classes = useStyles();
   return (

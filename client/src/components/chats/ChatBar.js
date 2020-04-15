@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import InputBase from '@material-ui/core/InputBase';
+import Input from '@material-ui/core/Input';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatIcon from '@material-ui/icons/Chat';
 import FaceIcon from '@material-ui/icons/Face';
@@ -59,21 +59,20 @@ export default function ChatBar(props) {
           </div>
         </div>
         <div className={classes.inputContainer}>
-          <form onSubmit={props.handleSubmit}>
             <div className={classes.icon}>
               <ChatIcon />
             </div>
-            <InputBase
+            <Input
               onChange={props.handleContent}
+              type="text"
               value={props.content}
               placeholder='Type your message...'
-              classes={{
+              classes = {{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'content' }}
-            />
-          </form>
+            >
+            </Input>
         </div>
       </Toolbar>
     </AppBar>
