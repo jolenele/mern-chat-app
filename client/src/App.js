@@ -6,12 +6,15 @@ import './App.css';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import ChatBox from './components/chats/ChatBox';
+import RoomsList from './components/admin/RoomsList';
+import LogsList from './components/admin/LogsList';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
 import setAuthToken from './actions/setAuthToken';
+import UsersList from './components/admin/UsersList';
 
 const App = () => {
   useEffect(() => {
@@ -30,6 +33,9 @@ const App = () => {
               <Route exact path='/chats' component={ChatBox} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
+              <Route exact path='/users' component={UsersList} />
+              <Route exact path='/rooms' component={RoomsList} />
+              <Route exact path='/logs' component={LogsList} />
             </Switch>
           </section>
         </Fragment>

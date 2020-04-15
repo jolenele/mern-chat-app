@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUsers } from '../../actions/auth';
@@ -11,6 +11,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Contact from './Contact';
 
 const useStyles = makeStyles({
   table: {
@@ -18,9 +19,15 @@ const useStyles = makeStyles({
   },
 });
 
-const UsersList = ({ getUsers, user: { users, loading } }) => {
-  useEffect(() => {
-    getUsers();
+const UsersList = () => {
+  const [users, setUsers] = useState([]);
+  const token = localStorage.getItem('token');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(async () => {
+    const resUser = await getUsers(token);
+    console.log(resUser);
+    setUsers(resUser);
   }, []);
   const classes = useStyles();
   return (
@@ -29,6 +36,7 @@ const UsersList = ({ getUsers, user: { users, loading } }) => {
         <Spinner />
       ) : (
         <Fragment>
+          <Contact />
           <h1 className='large text-primary'>All Users Registered</h1>
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label='simple table'>
@@ -67,10 +75,10 @@ const UsersList = ({ getUsers, user: { users, loading } }) => {
 };
 
 UsersList.propTypes = {
-  getUsers: PropTypes.func.isRequired,
+  setUsers: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
   user: state.user,
 });
-export default connect(mapStateToProps, { getUsers })(UsersList);
+export default connect(mapStateToProps, { setUsers })(UsersList);

@@ -119,8 +119,6 @@ export const login = (email, password) => async (dispatch) => {
   try {
     const res = await axios.post(`${server}/auth`, { email, password }, config);
 
-    localStorage.setItem('token', res.data.token)
-
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,

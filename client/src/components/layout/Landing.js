@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to='/' />;
   }
 
   return (
@@ -13,7 +13,7 @@ const Landing = ({ isAuthenticated }) => {
       <div className='landing-inner'>
         <h1>MERN Chat App</h1>
         <div>
-          <Link to='/register'>Sign Up</Link>
+          <Link to='/register'>Sign Up </Link>
           <br />
           <Link to='/login'>Login</Link>
         </div>

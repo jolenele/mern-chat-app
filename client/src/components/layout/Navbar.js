@@ -32,7 +32,7 @@ const Navbar = ({ auth: { username, isAuthenticated, loading }, logout }) => {
   const adminLinks = (
     <ul>
       <li>
-        <Link to='/users'>Users List</Link>
+        <Link to='/users'>Contacts</Link>
       </li>
       <li>
         <Link to='/rooms'>Rooms List</Link>

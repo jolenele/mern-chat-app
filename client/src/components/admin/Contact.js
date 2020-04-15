@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUsers } from './ActionHelper';
+import { getUsers } from '../chats/ActionHelper';
 import Spinner from '../layout/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -18,14 +18,14 @@ const useStyles = makeStyles({
   },
 });
 const Contact = () => {
-  const [users, setUsers] = useState([])
-  const token = localStorage.getItem('token')
-  const [loading, setLoading] = useState(false)
+  const [users, setUsers] = useState([]);
+  const token = localStorage.getItem('token');
+  const [loading, setLoading] = useState(false);
 
   useEffect(async () => {
     const resUser = await getUsers(token);
-    console.log(resUser)
-    setUsers(resUser)
+    console.log(resUser);
+    setUsers(resUser);
   }, []);
   const classes = useStyles();
   return (
