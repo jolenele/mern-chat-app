@@ -14,6 +14,7 @@ const Landing = ({ isAuthenticated }) => {
         <h1>MERN Chat App</h1>
         <div>
           <Link to='/register'>Sign Up</Link>
+          <br />
           <Link to='/login'>Login</Link>
         </div>
       </div>

@@ -18,7 +18,14 @@ const server = 'http://localhost:5000';
 // Load User
 export const loadUser = () => async (dispatch) => {
   try {
-    const res = await axios.get(`${server}/auth`);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await axios.get(`${server}/auth`, config);
 
     dispatch({
       type: USER_LOADED,
@@ -52,7 +59,14 @@ export const getUserById = (userId) => async (dispatch) => {
 export const getUsers = () => async (dispatch) => {
   dispatch({ type: CLEAR_USER });
   try {
-    const res = await axios.get(`${server}/api/user`);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const res = await axios.get(`${server}/api/user`, config);
 
     dispatch({
       type: GET_USERS,
@@ -102,7 +116,6 @@ export const login = (email, password) => async (dispatch) => {
     },
   };
 
-
   try {
     const res = await axios.post(`${server}/auth`, { email, password }, config);
 
@@ -113,6 +126,7 @@ export const login = (email, password) => async (dispatch) => {
 
     // const token = res.data.token;
     dispatch(loadUser());
+    dispatch(getUsers());
   } catch (err) {
     const errors = err.response.data.errors;
 

@@ -17,7 +17,6 @@ import {
   addLog,
   getChats,
   getLogs,
-  getUser,
   getRooms,
 } from '../../actions/chats';
 // import combineReducers from '../../reducers/index';
@@ -62,8 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 let socket;
 const newChat = (msg) => {
   socket.emit('new_message', msg);
@@ -93,16 +90,14 @@ const ChatBox = () => {
   // State Decleration
   const [chats, setChats] = useState([]);
   const [user, setUser] = useState('');
-  const [room, setRoom] =useState([]);
+  const [room, setRoom] = useState([]);
   const [message, setMessage] = useState('');
   const token = localStorage.getItem('token');
   useEffect(() => {
     getChats(token);
     getRooms(token);
-    getUser(token);
+    loadUser();
   }, [getChats]);
-
-  
 
   console.log('chats ne: ' + chats);
 
@@ -115,22 +110,16 @@ const ChatBox = () => {
     setMessage('');
   };
 
-
   const handleTextChange = (log) => {
     handleSendMessage();
     log.preventDefault();
   };
 
   const handleKeypress = (event) => {
-    if(event.keyCode === 13){
-      handleSendMessage()
+    if (event.keyCode === 13) {
+      handleSendMessage();
     }
-    event.preventDefault()
-}
-
-  const handleLogout = () => {
-    userLeft(user);
-    return <Redirect to='/chats' />;
+    event.preventDefault();
   };
 
   // Socket
@@ -200,38 +189,38 @@ const ChatBox = () => {
               </Typography>
             </div>
           ))}
-
       </div>
       {/* Chat Bar */}
-      <div className="chat-bar">
-      <div className={classes.inputContainer} style={{ maxWidth: '200px' }}>
-        </div>
+      <div className='chat-bar'>
+        <div
+          className={classes.inputContainer}
+          style={{ maxWidth: '200px' }}
+        ></div>
         <div className={classes.inputContainer}>
-            <div className={classes.icon}>
-              <ChatIcon />
-            </div>
-            <Input
-              onChange={e => setMessage(e.target.value)}
-              onKeyUp={e => handleKeypress(e)}
-              type="text"
-              value={message}
-              placeholder='Type your message...'
-              classes = {{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-            >
-            </Input>
-            <Button
-              variant='contained'
-              id='sendButton'
-              color='primary'
-              onClick={() => {
-                handleSendMessage();
-              }}
-            >
-              Send
-            </Button>
+          <div className={classes.icon}>
+            <ChatIcon />
+          </div>
+          <Input
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={(e) => handleKeypress(e)}
+            type='text'
+            value={message}
+            placeholder='Type your message...'
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+          ></Input>
+          <Button
+            variant='contained'
+            id='sendButton'
+            color='primary'
+            onClick={() => {
+              handleSendMessage();
+            }}
+          >
+            Send
+          </Button>
         </div>
       </div>
     </Fragment>

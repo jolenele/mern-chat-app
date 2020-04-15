@@ -30,7 +30,6 @@ app.use('/api/user', require('./routes/user')); // retrieve users
 app.use('/api/chats', require('./routes/chats'));
 app.use('/api/log', require('./routes/log'));
 app.use('/api/room', require('./routes/room'));
-app.use('/api/guest', require('./routes/guest'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
