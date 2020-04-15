@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getLogs } from '../../actions/chats';
@@ -18,9 +18,15 @@ const useStyles = makeStyles({
   },
 });
 
-const LogsList = ({ getLogs, log: { logs, loading } }) => {
-  useEffect(() => {
-    getLogs();
+const LogsList = () => {
+  const [logs, setLogs] = useState([]);
+  const token = localStorage.getItem('token');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(async () => {
+    const resLogs = await getLogs(token);
+    console.log(resLogs);
+    setLogs(resLogs);
   }, []);
   const classes = useStyles();
   return (
@@ -67,10 +73,10 @@ const LogsList = ({ getLogs, log: { logs, loading } }) => {
 };
 
 LogsList.propTypes = {
-  getLogs: PropTypes.func.isRequired,
-  log: PropTypes.object.isRequired,
+  setLogs: PropTypes.func.isRequired,
+  logs: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-  log: state.log,
+  logs: state.logs,
 });
-export default connect(mapStateToProps, { getLogs })(LogsList);
+export default connect(mapStateToProps)(LogsList);

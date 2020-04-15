@@ -62,10 +62,10 @@ export const getLogs = async (token) => async (dispatch) => {
       payload: res.data.data,
     });
   } catch (err) {
-    dispatch({
-      type: LOG_ERROR,
-      payload: err.response.data.error,
-    });
+    // dispatch({
+    //   type: LOG_ERROR,
+    //   payload: err.response.data.error,
+    // });
   }
 };
 
@@ -83,10 +83,10 @@ export const getRooms = async (token) => async (dispatch) => {
       payload: res.data.data,
     });
   } catch (err) {
-    dispatch({
-      type: ROOM_ERROR,
-      payload: err.response.data.error,
-    });
+    // dispatch({
+    //   type: ROOM_ERROR,
+    //   payload: err.response.data.error,
+    // });
   }
 };
 

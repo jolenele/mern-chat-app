@@ -11,7 +11,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Contact from './Contact';
 
 const useStyles = makeStyles({
   table: {
@@ -36,7 +35,6 @@ const UsersList = () => {
         <Spinner />
       ) : (
         <Fragment>
-          <Contact />
           <h1 className='large text-primary'>All Users Registered</h1>
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label='simple table'>
@@ -74,4 +72,11 @@ const UsersList = () => {
   );
 };
 
-export default UsersList
+UsersList.propTypes = {
+  setUsers: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+export default connect(mapStateToProps)(UsersList);

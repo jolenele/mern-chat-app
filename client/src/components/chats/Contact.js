@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUsers } from '../chats/ActionHelper';
+import { getUsers } from './ActionHelper';
 import Spinner from '../layout/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -34,7 +34,7 @@ const Contact = () => {
         <Spinner />
       ) : (
         <Fragment>
-          <h1 className='large text-primary'>All Users Registered</h1>
+          <h1 className='large text-primary'>Contact</h1>
           <TableContainer component={Paper}>
             <Table className={classes.table} aria-label='simple table'>
               <TableHead>

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getRooms } from '../../actions/chats';
@@ -18,15 +18,16 @@ const useStyles = makeStyles({
   },
 });
 
-const RoomList = ({ getRooms, room: { rooms, loading } }) => {
-  useEffect(() => {
-    getRooms();
+const RoomList = () => {
+  const [rooms, setRooms] = useState([]);
+  const token = localStorage.getItem('token');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(async () => {
+    const resRoom = await getRooms(token);
+    console.log(resRoom);
+    setRooms(resRoom);
   }, []);
-  // useEffect(async () => {
-  //   const resRoom = await getRooms(token);
-  //   console.log(resUser);
-  //   setRooms(resRoom);
-  // }, []);
   const classes = useStyles();
   return (
     <Fragment>
@@ -68,10 +69,10 @@ const RoomList = ({ getRooms, room: { rooms, loading } }) => {
 };
 
 RoomList.propTypes = {
-  getRooms: PropTypes.func.isRequired,
-  room: PropTypes.object.isRequired,
+  setRooms: PropTypes.func.isRequired,
+  rooms: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-  room: state.room,
+  rooms: state.rooms,
 });
-export default connect(mapStateToProps, { getRooms })(RoomList);
+export default connect(mapStateToProps)(RoomList);

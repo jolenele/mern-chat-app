@@ -40,10 +40,10 @@ password: abc123
 
 2. What I have not finished:
 
-- Display the Chat Box
-- Retrieve and set messages from server to client side
-- Display event logs
-- Display chat history
+- Display the Chat Box (finished)
+- Retrieve and set messages from server to client side (finished)
+- Display event logs (finished)
+- Display chat history (finished)
 - Change room feature on client side
 
 3. What I have problems with or need to improve on:
