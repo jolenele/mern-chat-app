@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import ChatBar from './ChatBar';
 import Contact from '../admin/Contact';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
@@ -13,6 +12,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import { loadUser } from '../../actions/auth';
 import setAuthToken from '../../actions/setAuthToken';
 import Chip from '@material-ui/core/Chip';
+import Grid from "@material-ui/core/Grid";
 import {
   addChat,
   addLog,
@@ -194,7 +194,18 @@ const ChatBox = () => {
   }
   return (
     <Fragment>
-      <div className='chat-box'>
+      <div className="contact">
+        <Grid container spacing={3}>
+          <Grid item xs={3}>
+            <Contact />
+          </Grid>
+          <Grid item xs={9}>
+            <MessageList />
+          </Grid>
+        </Grid>
+    </div>
+    <div className="chat">
+    <div className='chat-box'>
         {chats.map((chat) => (
           <div key={chat._id}>
             <Typography className='inline' key='message' variant='body1'>
@@ -238,6 +249,8 @@ const ChatBox = () => {
           </Button>
         </div>
       </div>
+    </div>
+      
     </Fragment>
   );
 };
