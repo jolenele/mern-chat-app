@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatBar from './ChatBar';
-import Contact from '../admin/Contact';
+import Contact from './Contact';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
