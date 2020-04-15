@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import ChatBar from './ChatBar';
-import Contact from './Contact';
+import Contact from '../admin/Contact';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
@@ -63,8 +63,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 let socket;
 const newChat = (msg) => {
   socket.emit('new_message', msg);
@@ -94,7 +92,7 @@ const ChatBox = () => {
   // State Decleration
   const [chats, setChats] = useState([]);
   const [user, setUser] = useState('');
-  const [room, setRoom] =useState([]);
+  const [room, setRoom] = useState([]);
   const [message, setMessage] = useState('');
   const token = localStorage.getItem('token');
   useEffect(async () => {
@@ -103,9 +101,8 @@ const ChatBox = () => {
     const roomRes = await getRooms(token);
     setRoom(roomRes);
     const userRes = await getUsers(token);
-    setUser(userRes)
+    setUser(userRes);
   }, [getChats]);
-
 
 
   const handleSendMessage = () => {
@@ -119,22 +116,16 @@ const ChatBox = () => {
     setMessage('');
   };
 
-
   const handleTextChange = (log) => {
     handleSendMessage();
     log.preventDefault();
   };
 
   const handleKeypress = (event) => {
-    if(event.keyCode === 13){
-      handleSendMessage()
+    if (event.keyCode === 13) {
+      handleSendMessage();
     }
-    event.preventDefault()
-}
-
-  const handleLogout = () => {
-    userLeft(user);
-    return <Redirect to='/chats' />;
+    event.preventDefault();
   };
 
   // Socket
@@ -193,52 +184,47 @@ const ChatBox = () => {
   }
   return (
     <Fragment>
-      <Contact />
       <div className='chat-box'>
-        {chats
-          .map((chat) => (
-            <div key={chat._id}>
-              <Typography className='inline' key='message' variant='body1'>
-              <Chip
-                  icon={<FaceIcon />}
-                  label={chat.sender}
-                />
-                {chat.content}
-              </Typography>
-            </div>
-          ))}
-
+        {chats.map((chat) => (
+          <div key={chat._id}>
+            <Typography className='inline' key='message' variant='body1'>
+              <Chip icon={<FaceIcon />} label={chat.sender} />
+              {chat.content}
+            </Typography>
+          </div>
+        ))}
       </div>
       {/* Chat Bar */}
-      <div className="chat-bar">
-      <div className={classes.inputContainer} style={{ maxWidth: '200px' }}>
-        </div>
+      <div className='chat-bar'>
+        <div
+          className={classes.inputContainer}
+          style={{ maxWidth: '200px' }}
+        ></div>
         <div className={classes.inputContainer}>
-            <div className={classes.icon}>
-              <ChatIcon />
-            </div>
-            <Input
-              onChange={e => setMessage(e.target.value)}
-              onKeyUp={e => handleKeypress(e)}
-              type="text"
-              value={message}
-              placeholder='Type your message...'
-              classes = {{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-            >
-            </Input>
-            <Button
-              variant='contained'
-              id='sendButton'
-              color='primary'
-              onClick={() => {
-                handleSendMessage();
-              }}
-            >
-              Send
-            </Button>
+          <div className={classes.icon}>
+            <ChatIcon />
+          </div>
+          <Input
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={(e) => handleKeypress(e)}
+            type='text'
+            value={message}
+            placeholder='Type your message...'
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+          ></Input>
+          <Button
+            variant='contained'
+            id='sendButton'
+            color='primary'
+            onClick={() => {
+              handleSendMessage();
+            }}
+          >
+            Send
+          </Button>
         </div>
       </div>
     </Fragment>

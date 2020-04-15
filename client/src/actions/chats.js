@@ -36,7 +36,6 @@ export const getChats = async (token) => async (dispatch) => {
   };
   try {
     const res = await axios.get(`${server}/api/chats`, config);
-
     dispatch({
       type: GET_CHATS,
       payload: res.data.data,
@@ -108,27 +107,6 @@ export const addChat = async (chat, token) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: CHAT_ERROR,
-      payload: err.response.data.error,
-    });
-  }
-};
-
-export const getUser = async (token) => async (dispatch) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  try {
-    const res = await axios.get(`${server}/api/user`, config);
-
-    dispatch({
-      type: GET_USERS,
-      payload: res.data.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: AUTH_ERROR,
       payload: err.response.data.error,
     });
   }

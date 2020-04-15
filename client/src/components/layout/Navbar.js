@@ -11,8 +11,8 @@ const Navbar = ({ auth: { username, isAuthenticated, loading }, logout }) => {
         <Link to='/chats'>Chat Box</Link>
       </li>
       <li>
-        <a onClick={logout} href='#!'>
-          <span className='hide-sm'>Logout</span>
+        <a onClick={logout} href='/'>
+          <span>Logout</span>
         </a>
       </li>
     </ul>
@@ -32,10 +32,7 @@ const Navbar = ({ auth: { username, isAuthenticated, loading }, logout }) => {
   const adminLinks = (
     <ul>
       <li>
-        <Link to='/chats'>Chat Box</Link>
-      </li>
-      <li>
-        <Link to='/getUsers'>Users List</Link>
+        <Link to='/users'>Contacts</Link>
       </li>
       <li>
         <Link to='/rooms'>Rooms List</Link>
@@ -45,6 +42,7 @@ const Navbar = ({ auth: { username, isAuthenticated, loading }, logout }) => {
       </li>
     </ul>
   );
+
   return (
     <nav className='navbar'>
       <h1>
