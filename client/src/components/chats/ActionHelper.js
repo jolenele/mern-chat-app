@@ -10,7 +10,7 @@ export const getChats = async (token) => {
         }
     }
     try {
-        const res = await axios.get(`${SERVER}/api/chat`, config)
+        const res = await axios.get(`${SERVER}/api/chats`, config)
         return res.data.data
     }
     catch (err) {
@@ -27,7 +27,7 @@ export const addChat = async (chat, token) => {
     }
 
     try {
-        const res = await axios.post(`${SERVER}/api/chat`, chat, config)
+        const res = await axios.post(`${SERVER}/api/chats`, chat, config)
         return res.data
     }
     catch (err) {
@@ -35,7 +35,7 @@ export const addChat = async (chat, token) => {
     }
 }
 
-export const getRoom = async(token) => {
+export const getRooms = async(token) => {
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -66,7 +66,7 @@ export const addRoom = async(room, token) => {
     }
 }
 
-export const getLog = async (token) => {
+export const getLogs = async (token) => {
     const config = {
         headers: {
             'Authorization': `Bearer ${token}`
@@ -92,6 +92,21 @@ export const addLog = async (log, token) => {
     try {
         const res = await axios.post(`${SERVER}/api/log`, log, config)
         return res.data
+    }
+    catch (err) {
+        console.error(err)
+    }
+}
+
+export const getUsers = async (token) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
+    try {
+        const res = await axios.get(`${SERVER}/api/user`, config)
+        return res.data.data
     }
     catch (err) {
         console.error(err)
