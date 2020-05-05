@@ -37,28 +37,3 @@ https://mern-chat-app-ngale.herokuapp.com/
 6. '/logs' : Show event logs from admin side
 7. '/rooms' : Show rooms from admin side
 8. '/logout' : For logout feature, in case navigation bar does not load the logout button
-
-# Project Report:
-
-1. What I have done/used:
-
-- Mongoose using MongoDB Cloud Atlas - Connect database successfully, be able to read, write, update and delete
-- Socket IO - configure both side client and server
-- Backend Server - Node.js
-- React
-- Redux
-- Authentication with JWT Token - Create new account and login
-
-2. What I have not finished:
-
-- Display the Chat Box (finished)
-- Retrieve and set messages from server to client side (finished)
-- Display event logs (finished)
-- Display chat history (finished)
-- Change room feature on client side
-
-3. What I have problems with or need to improve on:
-
-- React and Redux - I spent most of the time learning and debugging React and Redux
-- Establish the socket connection from client to server though React and Redux (resovled)
-- The wavering in using functional vs class React component
